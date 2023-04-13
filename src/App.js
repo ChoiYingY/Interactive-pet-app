@@ -1,8 +1,10 @@
-import logo from './logo.svg';
 import './App.css';
 
 import { Canvas } from "react-three-fiber";
-import ModelViewer from "./ModelViewer";
+import React, {useEffect, useState } from 'react';
+
+import HomeScreen from "./HomeScreen";
+import LoadingScreen from './LoadingScreen';
 
 
 // import React, { Suspense } from 'react';
@@ -32,8 +34,25 @@ import ModelViewer from "./ModelViewer";
 // }
 
 function App() {
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 1000);
+  }, []);
+    
   return (
-    <ModelViewer scale="40" modelPath={"./wolfie.glb"} />
+    <div className='home'>
+      {!isLoading
+        ? <div>
+          <HomeScreen/>
+        </div>
+        : <LoadingScreen/>
+      }
+    </div>
+    
+    // <ModelViewer scale="10" modelPath={"./wolfie.glb"} />
 
     // <Canvas style={{ background: "#B6977D", height:"500px"}}>
     // </Canvas>
