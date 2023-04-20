@@ -2,7 +2,7 @@ import React from "react";
 
 import ChatBox from "./ChatBox";
 import ModelViewer from "./ModelViewer";
-import VoiceRecorder from "./VoiceRecorder";
+// import VoiceRecorder from "./VoiceRecorder";
 
 import { Toolbar, Typography, Box, Grid } from "@mui/material";
 
@@ -10,7 +10,7 @@ const HomeScreen = () => {
     return(
         <Grid className="homeScreen">
             <Grid className='home'>
-                <VoiceRecorder/>
+                {/* <VoiceRecorder/> */}
                 
                 <Box className="pet">
                     <div className="status">

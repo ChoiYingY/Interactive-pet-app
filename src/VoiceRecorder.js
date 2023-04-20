@@ -1,9 +1,7 @@
 import React, { useContext } from "react";
 
-import { Modal } from '@mui/material';
 import { GlobalStoreContext } from "./Store";
-
-import { Button } from "@mui/material";
+import { Modal, Button } from "@mui/material";
 
 const style = {
     top: "0",

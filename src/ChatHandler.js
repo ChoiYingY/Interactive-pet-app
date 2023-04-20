@@ -1,9 +1,8 @@
 import React, { useState, useContext } from "react";
 
-import Message from "./Message";
 import { GlobalStoreContext } from './Store';
 
-import { Grid, TextField, Avatar, Button } from '@mui/material';
+import { Grid, Button, Avatar, TextField } from "@mui/material";
 import MicIcon from '@mui/icons-material/Mic';
 
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
@@ -38,7 +37,7 @@ const style = {
     }
 }
 
-const ChatBox = () => {
+const SpeechRecognizer = () => {
     const { store } = useContext(GlobalStoreContext);
 
     const [msg, setMsg] = useState("");
@@ -46,14 +45,6 @@ const ChatBox = () => {
 
     const { transcript, resetTranscript } = useSpeechRecognition();
     const [isRecording, setIsRecording] = useState(false);
-
-    let messages= (store && store.messageList) ? (store.messageList.map((msg) => (
-        <Message
-            key={msg.id}
-            sender={msg.sender}
-            message={msg.message}
-        />
-    ))) : "";
 
     function handleMsgUpdate(event){
         event.stopPropagation();
@@ -76,8 +67,27 @@ const ChatBox = () => {
     function handleStopRecording(event){
         event.stopPropagation();
         setShowBtn(false);
-
         SpeechRecognition.stopListening();
+    }
+
+    function handleStartRecording(event){
+        event.stopPropagation();
+        
+        if(store){
+            if(!SpeechRecognition.browserSupportsSpeechRecognition()) {
+                store.addMessage('Warning', "Warning! The current Browser does not Support Speech Recognition.");
+                store.addMessage('Warning', "If your browser is Firefox, you may want to visit about:config & turn on the following flags: 1) media.webspeech.recognition.enable & 2) media.webspeech.recognition.force_enable");
+            }
+            else{
+                console.log("recording");
+                setShowBtn(true);
+                setIsRecording(true);
+                
+                SpeechRecognition.startListening({
+                    continuous: true,
+                });
+            }
+        }
     }
 
     let msgPlaceHolder = (showBtn) ?
@@ -106,37 +116,10 @@ const ChatBox = () => {
             </>
         );
 
-    function handleStartRecording(event){
-        event.stopPropagation();
-        
-        if(store){
-            if(!SpeechRecognition.browserSupportsSpeechRecognition()) {
-                store.addMessage('Warning', "Warning! The current Browser does not Support Speech Recognition.");
-                store.addMessage('Warning', "If your browser is Firefox, you may want to visit about:config & turn on the following flags: 1) media.webspeech.recognition.enable & 2) media.webspeech.recognition.force_enable");
-            }
-            else{
-                console.log("recording");
-                setShowBtn(true);
-                setIsRecording(true);
-                
-                SpeechRecognition.startListening({
-                    continuous: true,
-                });
-            }
-        }
-    }
-
     return (
-        <Grid sx ={[ style.flexColumn, { width:"70vw", backgroundColor: "#cfdce1", justifyContent:"space-between" } ]}>            
-            <Grid sx={[ style.flexColumn, {  width:"100%", justifyContent:"flex-start", overflowY: "scroll", overflowX: "hidden"  } ]}>
-                {messages}
-            </Grid>
-
-            <Grid sx={ style.msgPlaceHolder }>
-                {msgPlaceHolder}
-            </Grid>
+        <Grid sx={ style.msgPlaceHolder }>
+            {msgPlaceHolder}
         </Grid>
     )
 }
-
-export default ChatBox;
+export default SpeechRecognizer;

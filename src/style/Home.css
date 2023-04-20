@@ -36,8 +36,8 @@
     width: 30vw;
     height: 27vh;
 
-    background-image: url('../../public/assests/rilakkuma_background2.png');
-    background-size: cover;
+    /* background-image: url('../../public/assests/rilakkuma_background2.png');
+    background-size: cover; */
 }
 
 #chat{
