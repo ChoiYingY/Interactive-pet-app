@@ -1,40 +1,33 @@
 import React from "react";
 
+import NavBar from "./NavBar";
 import ModelViewer from "./ModelViewer";
 import ChatBox from "./ChatBox";
 
-import { Toolbar, AppBar, Typography, Box, TextField, Grid } from "@mui/material";
+import { Toolbar, Typography, Box, Grid } from "@mui/material";
 
 const HomeScreen = () => {
     return(
-        <div className="homeScreen">
-            <Box>
-                <AppBar>
-                    <Toolbar>
-                        <Typography>
-                            Hi
-                        </Typography>
-                    </Toolbar>
-                </AppBar>
-            </Box>
+        <Grid className="homeScreen">
+            <NavBar/>
+            <Toolbar/>
 
-            <div className='home'>
+            <Grid className='home'>
                 <Box className="pet">
-                    <Box id="status">
-                        <Typography>
-                            Hi
+                    <div className="status">
+                        <Typography padding="5%">
+                            hi
                         </Typography>
-                    </Box>
+                    </div>
 
-                    <Box>
+                    <Box height="65vh">
                         <ModelViewer scale="10" modelPath={"./assests/cube.gltf"} />
                     </Box>
                 </Box>
 
                 <ChatBox/>
-                
-            </div>
-        </div>
+            </Grid>
+        </Grid>
     );
 }
 
