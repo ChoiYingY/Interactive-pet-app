@@ -5,6 +5,7 @@ import './style/LoadingScreen.css';
 import React, { useEffect, useState } from 'react';
 import { GlobalStoreContextProvider } from './Store';
 
+import NavBar from "./NavBar";
 import HomeScreen from "./HomeScreen";
 import LoadingScreen from './LoadingScreen';
 
@@ -20,9 +21,12 @@ function App() {
   return (
     <GlobalStoreContextProvider>
       {!isLoading
-        ? <div>
-          <HomeScreen/>
-        </div>
+        ? (
+          <div>
+            <NavBar/>
+            <HomeScreen/>
+          </div>
+        )
         : <LoadingScreen/>
       }
     </GlobalStoreContextProvider>

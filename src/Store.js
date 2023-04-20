@@ -3,12 +3,14 @@ import { createContext, useState } from 'react';
 export const GlobalStoreContext = createContext({});
 
 export const GlobalStoreActionType = {
-    ADD_NEW_MSG: "ADD_NEW_MSG"
+    ADD_NEW_MSG: "ADD_NEW_MSG",
+    UPDATE_RECORDING_STATUS: "UPDATE_RECORDING_STATUS"
 }
 
 function GlobalStoreContextProvider(props) {
     const [store, setStore] = useState({
-        messageList: []
+        messageList: [],
+        is_recording: false
     });
 
     const storeReducer = (action) => {
@@ -17,7 +19,14 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.ADD_NEW_MSG: {
                 console.log("ADD_NEW_MSG");
                 return setStore({
-                    messageList: payload
+                    messageList: payload,
+                    is_recording: store.is_recording
+                });
+            }
+            case GlobalStoreActionType.UPDATE_RECORDING_STATUS: {
+                return setStore({
+                    messageList: store.messageList,
+                    is_recording: payload
                 });
             }
             default:
@@ -39,6 +48,20 @@ function GlobalStoreContextProvider(props) {
         storeReducer({
             type: GlobalStoreActionType.ADD_NEW_MSG,
             payload: msgList
+        });
+    }
+
+    store.startRecording = () => {
+        storeReducer({
+            type: GlobalStoreActionType.UPDATE_RECORDING_STATUS,
+            payload: true
+        });
+    }
+
+    store.stopRecording = () => {
+        storeReducer({
+            type: GlobalStoreActionType.UPDATE_RECORDING_STATUS,
+            payload: false
         });
     }
 

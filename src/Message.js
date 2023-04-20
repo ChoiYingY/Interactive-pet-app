@@ -1,7 +1,9 @@
 import React from "react";
 
 import { Grid, Box, Typography, Avatar } from '@mui/material';
+
 import AndroidIcon from '@mui/icons-material/Android';
+import WarningIcon from '@mui/icons-material/Warning';
 
 const style = {
     main: {
@@ -19,6 +21,21 @@ const style = {
     }
 };
 
+const msg_style = {
+    typography: {
+        borderRadius:"25px",
+        padding:"2.5%",
+        maxWidth:"70%"
+    },
+    box: {
+        margin:"10px 30px 10px 20px"
+    },
+    icon: {
+        width:"50px",
+        height:"50px"
+    }
+}
+
 const Message = (props) => {
     var sender = props.sender;
     var message = props.message;
@@ -26,20 +43,34 @@ const Message = (props) => {
     console.log(sender);
     console.log(message);
 
-    let msg = <Typography sx={{ backgroundColor:"white", borderRadius:"25px", padding:"2.5%", maxWidth:"70%"}}>
-                {message}
-            </Typography>
-
     let msg_display="";
+    
+    let msg = <Typography sx={[ msg_style.typography, { backgroundColor:"white" } ]}>
+                {message}
+            </Typography>;
 
-    if(sender === 'user'){
+    let icon = <Box sx={[ msg_style.box, {bgcolor: '#7DA6B6'} ]}>
+                    <Avatar sx={[ msg_style.icon, { bgcolor: '#7DA6B6' } ]}>
+                        <AndroidIcon/>
+                    </Avatar>
+                </Box>
+
+    if(sender === 'Warning'){
+        msg = <Typography sx={[ msg_style.typography, { backgroundColor:"red", color: "white" } ]}>
+                {message}
+            </Typography>;
+
+        icon = <Box sx={[ msg_style.box, { bgcolor: 'red' } ]}>
+                    <Avatar sx={[ msg_style.icon, { bgcolor: 'red' } ]}>
+                        <WarningIcon/>
+                    </Avatar>
+                </Box>
+    }
+
+    if(sender === 'User' || sender === 'Warning'){
         msg_display = (<Grid item sx={ [ style.main, style.user ] }>
             {msg}
-            <Box sx={{ margin:"10px 30px 10px 20px"}}>
-                <Avatar sx={{ m: 1, bgcolor: 'secondary.main', width:"50px", height:"50px"}}>
-                    <AndroidIcon/>
-                </Avatar>
-            </Box>
+            {icon}
         </Grid>)
     }
     else{
@@ -47,7 +78,7 @@ const Message = (props) => {
             <Box
                 component="img"
                 src="./assests/rilakkuma_icon.png"
-                sx={{ width:"auto", height:"50px", margin:"10px 20px 10px 0px"}}
+                sx={[ msg_style.icon, { margin:"10px 20px 10px 0px" } ] }
             />
             {msg}
         </Grid>)
@@ -55,7 +86,8 @@ const Message = (props) => {
 
     return (
         <Grid sx={{ width:"100%",  display:"flex", flexDirection:"column" }}>
-            <Grid container sx={{ display:"flex", justifyContent:"space-between" , flexDirection:"column", alignItems:"center", borderRadius:"5%", marginTop: "2%", marginLeft: "2%", height:"fit-content"}}>
+            <Grid container sx={{ display:"flex", justifyContent:"space-between" , flexDirection:"column", alignItems:"center", borderRadius:"5%",
+                marginTop: "2%", marginLeft: "2%", height:"fit-content" }}>
                 {msg_display}
             </Grid>
         </Grid>
