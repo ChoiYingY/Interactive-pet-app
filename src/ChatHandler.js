@@ -41,10 +41,13 @@ const SpeechRecognizer = () => {
     const { store } = useContext(GlobalStoreContext);
 
     const [msg, setMsg] = useState("");
-    const [showBtn, setShowBtn] = useState(false);
-
-    const { transcript, resetTranscript } = useSpeechRecognition();
     const [isRecording, setIsRecording] = useState(false);
+
+    const { transcript, resetTranscript } = useSpeechRecognition(
+        {onResult: (result) => {
+            console.log(result)
+        }}
+    );
 
     function handleMsgUpdate(event){
         event.stopPropagation();
@@ -66,8 +69,11 @@ const SpeechRecognizer = () => {
 
     function handleStopRecording(event){
         event.stopPropagation();
-        setShowBtn(false);
+
+        setIsRecording(false);
         SpeechRecognition.stopListening();
+
+        console.log(transcript);
     }
 
     function handleStartRecording(event){
@@ -80,17 +86,17 @@ const SpeechRecognizer = () => {
             }
             else{
                 console.log("recording");
-                setShowBtn(true);
                 setIsRecording(true);
                 
                 SpeechRecognition.startListening({
                     continuous: true,
+                    language: "en-US"
                 });
             }
         }
     }
 
-    let msgPlaceHolder = (showBtn) ?
+    let msgPlaceHolder = (isRecording) ?
             <Button
                 onClick={handleStopRecording}
                 sx={ [ style.btn, style.btnHoverSx ] }

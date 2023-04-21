@@ -36,6 +36,22 @@ const msg_style = {
     }
 }
 
+const flex_style = {
+    flexColumn: {
+        display:"flex",
+        flexDirection:"column",
+        width:"100%"
+    },
+    flexContainer: {
+        justifyContent:"space-between",
+        alignItems:"center",
+        borderRadius:"5%",
+        marginTop: "2%",
+        marginLeft: "2%",
+        height:"fit-content"
+    }
+}
+
 const Message = (props) => {
     var sender = props.sender;
     var message = props.message;
@@ -85,9 +101,8 @@ const Message = (props) => {
     }
 
     return (
-        <Grid sx={{ width:"100%",  display:"flex", flexDirection:"column" }}>
-            <Grid container sx={{ display:"flex", justifyContent:"space-between" , flexDirection:"column", alignItems:"center", borderRadius:"5%",
-                marginTop: "2%", marginLeft: "2%", height:"fit-content" }}>
+        <Grid sx={[ flex_style.flexColumn ]}>
+            <Grid container sx={ [ flex_style.flexColumn, flex_style.flexContainer ]}>
                 {msg_display}
             </Grid>
         </Grid>
