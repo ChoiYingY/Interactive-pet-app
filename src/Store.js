@@ -51,6 +51,10 @@ function GlobalStoreContextProvider(props) {
         });
     }
 
+    store.respondMessage = function(){
+        store.addMessage('Rilakkuma', "No.");
+    }
+
     store.selfIntroduction = function(){
         var msgList = store.messageList;
 

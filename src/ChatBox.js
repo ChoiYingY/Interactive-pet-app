@@ -5,6 +5,7 @@ import ChatHandler from './ChatHandler';
 import { GlobalStoreContext } from './Store';
 
 import { Grid } from '@mui/material';
+import EmojiPicker from 'emoji-picker-react';
 
 const style = {
     flexColumn: {
@@ -31,8 +32,8 @@ const ChatBox = () => {
         <Grid id="chatbox" sx ={[ style.flexColumn, { width:"70vw", backgroundColor: "#cfdce1", justifyContent:"space-between" } ]}>            
             <Grid sx={[ style.flexColumn, {  width:"100%", justifyContent:"flex-start", overflowY: "scroll", overflowX: "hidden"  } ]}>
                 {messages}
+                {/* <EmojiPicker position="absolute" alignSelf="flex-end"/> */}
             </Grid>
-
             <ChatHandler/>
         </Grid>
     )

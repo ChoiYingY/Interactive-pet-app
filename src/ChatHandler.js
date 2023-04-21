@@ -2,8 +2,10 @@ import React, { useState, useContext } from "react";
 
 import { GlobalStoreContext } from './Store';
 
-import { Grid, Button, Avatar, TextField } from "@mui/material";
 import MicIcon from '@mui/icons-material/Mic';
+import SendIcon from '@mui/icons-material/Send';
+import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
+import { Grid, Button, Avatar, TextField, InputAdornment } from "@mui/material";
 
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
@@ -55,16 +57,31 @@ const SpeechRecognizer = () => {
         console.log(msg);
     }
 
+    function sendMsg(msg){
+        if(!msg || msg === "")
+            return;
+
+        console.log(msg);
+        store.addMessage('User', msg);
+        store.respondMessage();
+        
+        setMsg("");
+        
+        console.log(store.messageList);
+    }
+
     function handleKeyPress(event){
         event.stopPropagation();
         
-        if(event.code === 'Enter' && store){
-            console.log(msg);
-            store.addMessage('User', msg);
-            setMsg("");
-            store.addMessage('Rilakkuma', "No.");
-            console.log(store.messageList);
-        }
+        if(event.code === 'Enter' && store)
+            sendMsg(msg);
+    }
+
+    function handleSendMsg(event){
+        event.stopPropagation();
+        
+        if(store)
+            sendMsg(msg);
     }
 
     function handleStopRecording(event){
@@ -114,10 +131,25 @@ const SpeechRecognizer = () => {
                     margin="normal"
                     name="name"
                     placeholder="Send a message..."
+
                     value={msg}
                     onChange={handleMsgUpdate}
                     onKeyPress={handleKeyPress}
+
                     sx={{ backgroundColor:"white", width: "92.5%" }}
+
+                    InputProps={{
+                        // startAdornment: (
+                        //     <InputAdornment position="start" onClick={()=>{console.log("hi")}}>
+                        //         {/* <EmojiEmotionsIcon/> */}
+                        //     </InputAdornment>
+                        // ),
+                        endAdornment: (
+                            <InputAdornment onClick={ handleSendMsg }>
+                                <SendIcon style={{ color: '#7DA6B6' }} />
+                            </InputAdornment>
+                        )
+                    }}
                 />
             </>
         );

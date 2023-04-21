@@ -12,7 +12,7 @@ const HomeScreen = () => {
     const { store } = useContext(GlobalStoreContext);
 
     const [choice, setChoice] = useState(0);
-    const choices = ["./assests/cube.gltf", "./assests/rook.glb", "./assests/wolfie.glb"];
+    const choices = ["./assets/cube.gltf", "./assets/rook.glb", "./assets/wolfie.glb"];
 
     const btn_style = {
         default:{
