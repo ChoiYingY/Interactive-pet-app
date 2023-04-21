@@ -13,7 +13,7 @@
     bottom: 0;
     left: 0;
   
-    background-color: rgb(201, 96, 96);
+    background-color: #B6977D;
   
     display: flex;
     flex-direction: row;
@@ -34,10 +34,15 @@
 
 .status{
     width: 30vw;
-    height: 27vh;
+    height: 28vh;
 
-    /* background-image: url('../../public/assests/rilakkuma_background2.png');
-    background-size: cover; */
+    background-image: url('../../public/assests/rilakkuma_background2.png');
+    background-size: cover;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: start;
 }
 
 #chat{
