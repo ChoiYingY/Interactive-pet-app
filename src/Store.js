@@ -51,6 +51,27 @@ function GlobalStoreContextProvider(props) {
         });
     }
 
+    store.selfIntroduction = function(){
+        var msgList = store.messageList;
+
+        var bearName = "Rilakkuma";
+        var intro = "Welcome! My name is Rilakkuma.";
+
+        const msg = {
+            id: msgList.length+1,
+            sender: bearName,
+            message: intro
+        }
+
+        if(!msgList.some(msgObj => (msgObj.sender === bearName && msgObj.message === intro)))
+            msgList.push(msg);
+
+        storeReducer({
+            type: GlobalStoreActionType.ADD_NEW_MSG,
+            payload: msgList
+        });
+    }
+
     store.startRecording = () => {
         storeReducer({
             type: GlobalStoreActionType.UPDATE_RECORDING_STATUS,
