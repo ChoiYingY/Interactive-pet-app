@@ -14,6 +14,19 @@ const style = {
         display:"flex",
         flexDirection:"column",
         alignItems:"center"
+    },
+    chatbox: {
+        width:"70vw",
+        backgroundColor: "#cfdce1",
+        justifyContent:"space-between",
+        position: "relative"
+    },
+    chatbox_content:{
+        width:"100%",
+        justifyContent:"flex-start",
+        overflowY: "scroll",
+        overflowX: "hidden",
+        paddingBottom: "9vh",
     }
 }
 
@@ -29,10 +42,9 @@ const ChatBox = () => {
     ))) : "";
 
     return (
-        <Grid id="chatbox" sx ={[ style.flexColumn, { width:"70vw", backgroundColor: "#cfdce1", justifyContent:"space-between" } ]}>            
-            <Grid sx={[ style.flexColumn, {  width:"100%", justifyContent:"flex-start", overflowY: "scroll", overflowX: "hidden"  } ]}>
+        <Grid id="chatbox" sx ={[ style.flexColumn, style.chatbox ]}>            
+            <Grid sx={[ style.flexColumn, style.chatbox_content ]}>
                 {messages}
-                {/* <EmojiPicker position="absolute" alignSelf="flex-end"/> */}
             </Grid>
             <ChatHandler/>
         </Grid>

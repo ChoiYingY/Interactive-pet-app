@@ -4,13 +4,13 @@ export const GlobalStoreContext = createContext({});
 
 export const GlobalStoreActionType = {
     ADD_NEW_MSG: "ADD_NEW_MSG",
-    UPDATE_RECORDING_STATUS: "UPDATE_RECORDING_STATUS"
+    IS_CHOOSING_EMOJI: "IS_CHOOSING_EMOJI"
 }
 
 function GlobalStoreContextProvider(props) {
     const [store, setStore] = useState({
         messageList: [],
-        is_recording: false
+        is_choosing_emoji: false
     });
 
     const storeReducer = (action) => {
@@ -20,13 +20,13 @@ function GlobalStoreContextProvider(props) {
                 console.log("ADD_NEW_MSG");
                 return setStore({
                     messageList: payload,
-                    is_recording: store.is_recording
+                    is_choosing_emoji: store.is_choosing_emoji
                 });
             }
-            case GlobalStoreActionType.UPDATE_RECORDING_STATUS: {
+            case GlobalStoreActionType.IS_CHOOSING_EMOJI: {
                 return setStore({
                     messageList: store.messageList,
-                    is_recording: payload
+                    is_choosing_emoji: payload
                 });
             }
             default:
@@ -76,16 +76,16 @@ function GlobalStoreContextProvider(props) {
         });
     }
 
-    store.startRecording = () => {
+    store.startChoosingEmoji = () => {
         storeReducer({
-            type: GlobalStoreActionType.UPDATE_RECORDING_STATUS,
+            type: GlobalStoreActionType.IS_CHOOSING_EMOJI,
             payload: true
         });
     }
 
-    store.stopRecording = () => {
+    store.stopChoosingEmoji = () => {
         storeReducer({
-            type: GlobalStoreActionType.UPDATE_RECORDING_STATUS,
+            type: GlobalStoreActionType.IS_CHOOSING_EMOJI,
             payload: false
         });
     }

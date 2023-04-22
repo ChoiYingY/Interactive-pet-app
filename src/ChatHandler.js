@@ -1,18 +1,15 @@
 import React, { useState, useContext } from "react";
 
+import InputField from "./InputField";
 import { GlobalStoreContext } from './Store';
 
 import MicIcon from '@mui/icons-material/Mic';
-import SendIcon from '@mui/icons-material/Send';
-import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 import { Grid, Button, Avatar, TextField, InputAdornment } from "@mui/material";
 
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
 const style = {
     flexColumn: {
-        height:"92vh",
-        maxHeight:"92vh",
         display:"flex",
         flexDirection:"column",
         alignItems:"center"
@@ -31,18 +28,29 @@ const style = {
         }
     },
     msgPlaceHolder: {
-        width: "98%",
+        width: "95%",
+        height: "10vh",
+        position: "absolute",
+        bottom: "0",
         display:"flex",
         justifyContent:"space-around",
         alignItems:"center",
-        marginBottom:"0.5%"
+        paddingBottom:"1vh",
+        backgroundColor: '#cfdce1',
+    },
+    inputGrid: {
+        width: "70vw",
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        position: "relative"
     }
 }
 
 const SpeechRecognizer = () => {
     const { store } = useContext(GlobalStoreContext);
 
-    const [msg, setMsg] = useState("");
     const [isRecording, setIsRecording] = useState(false);
 
     const { transcript, resetTranscript } = useSpeechRecognition(
@@ -50,39 +58,6 @@ const SpeechRecognizer = () => {
             console.log(result)
         }}
     );
-
-    function handleMsgUpdate(event){
-        event.stopPropagation();
-        setMsg(event.target.value);
-        console.log(msg);
-    }
-
-    function sendMsg(msg){
-        if(!msg || msg === "")
-            return;
-
-        console.log(msg);
-        store.addMessage('User', msg);
-        store.respondMessage();
-        
-        setMsg("");
-        
-        console.log(store.messageList);
-    }
-
-    function handleKeyPress(event){
-        event.stopPropagation();
-        
-        if(event.code === 'Enter' && store)
-            sendMsg(msg);
-    }
-
-    function handleSendMsg(event){
-        event.stopPropagation();
-        
-        if(store)
-            sendMsg(msg);
-    }
 
     function handleStopRecording(event){
         event.stopPropagation();
@@ -120,38 +95,15 @@ const SpeechRecognizer = () => {
             >
                 Stop Recording
             </Button>
-        : (<>
+        : (<Grid sx={ style.inputGrid } >
                 <Avatar
-                    sx={{ bgcolor: '#7DA6B6' }}
+                    sx={{ bgcolor: '#7DA6B6', position:"absolute" }}
                     onClick={handleStartRecording}
                 >
                     <MicIcon/>
                 </Avatar>
-                <TextField
-                    margin="normal"
-                    name="name"
-                    placeholder="Send a message..."
-
-                    value={msg}
-                    onChange={handleMsgUpdate}
-                    onKeyPress={handleKeyPress}
-
-                    sx={{ backgroundColor:"white", width: "92.5%" }}
-
-                    InputProps={{
-                        // startAdornment: (
-                        //     <InputAdornment position="start" onClick={()=>{console.log("hi")}}>
-                        //         {/* <EmojiEmotionsIcon/> */}
-                        //     </InputAdornment>
-                        // ),
-                        endAdornment: (
-                            <InputAdornment onClick={ handleSendMsg }>
-                                <SendIcon style={{ color: '#7DA6B6' }} />
-                            </InputAdornment>
-                        )
-                    }}
-                />
-            </>
+                <InputField/>
+            </Grid>
         );
 
     return (

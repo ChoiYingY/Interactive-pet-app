@@ -56,9 +56,6 @@ const Message = (props) => {
     var sender = props.sender;
     var message = props.message;
 
-    console.log(sender);
-    console.log(message);
-
     let msg_display="";
     
     let msg = <Typography sx={[ msg_style.typography, { backgroundColor:"white" } ]}>
