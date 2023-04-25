@@ -8,8 +8,8 @@ import { Grid } from '@mui/material';
 
 const style = {
     flexColumn: {
-        height:"92vh",
-        maxHeight:"92vh",
+        height:"93vh",
+        maxHeight:"93vh",
         display:"flex",
         flexDirection:"column",
         alignItems:"center"

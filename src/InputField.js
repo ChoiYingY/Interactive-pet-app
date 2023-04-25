@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef } from "react";
+import React, { useState, useContext, useRef, useEffect } from "react";
 
 import { GlobalStoreContext } from './Store';
 
@@ -11,7 +11,19 @@ import EmojiPicker from 'emoji-picker-react';
 const InputField = () => {
     const { store } = useContext(GlobalStoreContext);
     const [msg, setMsg] = useState("");
+    const [pushMsg, setPushMsg] = useState(false);
+
     const inputRef = useRef(null);
+
+    useEffect(() => {
+        console.log("store.messageList now update to:");
+        console.log(store.messageList);
+        if(pushMsg){
+            store.respondMessage(msg);
+            setPushMsg(false);
+            setMsg("");
+        }
+    }, [store.messageList]);
 
     function handleMsgUpdate(event){
         event.stopPropagation();
@@ -25,9 +37,8 @@ const InputField = () => {
 
         console.log(msg);
         store.addMessage('User', msg);
-        store.respondMessage(msg);
-        
-        setMsg("");
+
+        setPushMsg(true);
         
         console.log(store.messageList);
     }

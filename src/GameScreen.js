@@ -1,6 +1,7 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 
 import Square from "./Square";
+import GameConclusion from "./GameConclusion";
 
 import { Grid, Typography } from "@mui/material";
 import GlobalStoreContext from "./Store";
@@ -37,7 +38,7 @@ const GameScreen = () => {
 
     let arr = Array(9).fill(null);
 
-    if(store.gameGrid){
+    if(store && store.gameGrid){
         arr = store.gameGrid;
     }
 
@@ -45,7 +46,14 @@ const GameScreen = () => {
         return <Square key={index} index={index} value={squareValue}/>
     });
 
+    useEffect(()=> {
+        if(store){
+            store.calculateWinner();
+        }
+    }, [store.gameGrid])
+
     return <Grid sx={ style.grid }>
+        <GameConclusion/>
         <Typography variant="h1" sx={{marginTop: "1.5%"}}>Tic-Tac-Toe</Typography>
         <Grid sx={ style.gameGrid_row }>
             {gameGrid}

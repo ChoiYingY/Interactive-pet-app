@@ -8,7 +8,8 @@ export const GlobalStoreActionType = {
     IS_CHOOSING_EMOJI: "IS_CHOOSING_EMOJI",
     UPDATE_GAME_GRID: "UPDATE_GAME_GRID",
     IS_EDITING_NAME: "IS_EDITING_NAME",
-    UPDATE_NAME: "UPDATE_NAME"
+    UPDATE_NAME: "UPDATE_NAME",
+    GAME_FINISH: "GAME_FINISH"
 }
 
 function GlobalStoreContextProvider(props) {
@@ -20,6 +21,7 @@ function GlobalStoreContextProvider(props) {
         gameGrid: Array(9).fill(null),
         name: 'Rilakkuma',
         edit_name: false,
+        finish_game: -1,
     });
 
     const storeReducer = (action) => {
@@ -32,7 +34,8 @@ function GlobalStoreContextProvider(props) {
                     is_choosing_emoji: store.is_choosing_emoji,
                     gameGrid: store.gameGrid,
                     name: store.name,
-                    edit_name: false
+                    edit_name: false,
+                    finish_game: -1,
                 });
             }
             case GlobalStoreActionType.IS_CHOOSING_EMOJI: {
@@ -41,16 +44,18 @@ function GlobalStoreContextProvider(props) {
                     is_choosing_emoji: payload,
                     gameGrid: store.gameGrid,
                     name: store.name,
-                    edit_name: false
+                    edit_name: false,
+                    finish_game: -1,
                 });
             }
             case GlobalStoreActionType.UPDATE_GAME_GRID: {
                 return setStore({
                     messageList: store.messageList,
                     is_choosing_emoji: store.is_choosing_emoji,
-                    gameGrid: payload,
+                    gameGrid: payload.gameGrid,
                     name: store.name,
-                    edit_name: false
+                    edit_name: false,
+                    finish_game: payload.finish_game
                 });
             }
             case GlobalStoreActionType.IS_EDITING_NAME: {
@@ -59,7 +64,8 @@ function GlobalStoreContextProvider(props) {
                     is_choosing_emoji: store.is_choosing_emoji,
                     gameGrid: store.gameGrid,
                     name: store.name,
-                    edit_name: payload
+                    edit_name: payload,
+                    finish_game: -1,
                 });
             }
             case GlobalStoreActionType.UPDATE_NAME: {
@@ -69,7 +75,19 @@ function GlobalStoreContextProvider(props) {
                     is_choosing_emoji: store.is_choosing_emoji,
                     gameGrid: store.gameGrid,
                     name: payload,
-                    edit_name: false
+                    edit_name: false,
+                    finish_game: -1,
+                });
+            }
+            case GlobalStoreActionType.GAME_FINISH: {
+                console.log(`GAME_FINISH: ${payload}`);
+                return setStore({
+                    messageList: store.messageList,
+                    is_choosing_emoji: store.is_choosing_emoji,
+                    gameGrid: store.gameGrid,
+                    name: store.name,
+                    edit_name: false,
+                    finish_game: payload
                 });
             }
             default:
@@ -85,33 +103,42 @@ function GlobalStoreContextProvider(props) {
             sender: sender,
             message: message
         }
-
-        msgList.push(msg);
+        
+        let newMsgList = [...msgList, msg]
+        console.log(newMsgList);
 
         storeReducer({
             type: GlobalStoreActionType.ADD_NEW_MSG,
-            payload: msgList
+            payload: newMsgList
         });
     }
 
     store.chooseSquare = function(chooser, index){
         if(index === null)
             return;
-        let newGameGrid = store.gameGrid;
+        let gameGrid = store.gameGrid;
 
         console.log(`index:${index}`);
-        newGameGrid[index] = (chooser === 'User') ? 1: 0;
+        let squareValue = (chooser === 'User') ? 1: 0;
+        // newGameGrid[index] = (chooser === 'User') ? 1: 0;
+        const newGameGrid = [...gameGrid.slice(0, index), squareValue, ...gameGrid.slice(index + 1)]
 
         storeReducer({
             type: GlobalStoreActionType.UPDATE_GAME_GRID,
-            payload: newGameGrid
+            payload: {
+                gameGrid: newGameGrid,
+                finish_game: store.finish_game
+            }
         });
     }
 
     store.clearGrid = () => {
         storeReducer({
             type: GlobalStoreActionType.UPDATE_GAME_GRID,
-            payload: Array(9).fill(null)
+            payload: {
+                gameGrid: Array(9).fill(null),
+                finish_game: -1
+            }
         });
     }
 
@@ -124,6 +151,7 @@ function GlobalStoreContextProvider(props) {
         senderMsg = senderMsg.toLowerCase();
         let bearName = store.name.toLowerCase();
         console.log(bearName);
+        console.log(senderMsg);
 
         if(senderMsg === "game" || senderMsg === "tic-tac-toe" || senderMsg.includes("let's play") || senderMsg.includes("let's play game") || senderMsg.includes("let's play tic-tac-toe")){
             store.addMessage(store.name, "Okay! Let's play tic-tac-toe with me!");
@@ -134,11 +162,12 @@ function GlobalStoreContextProvider(props) {
             store.addMessage(store.name, `Hi User! I am ${store.name}. How are you doing? (*￣(ｴ)￣*)ﾉ`);
             return;
         }
-        store.addMessage(store.name, "No.");
+        store.addMessage(store.name, "Sorry, I'm just a silly bear who don't understead complex human sentences. （´㉨｀*)");
     }
 
     store.selfIntroduction = function(){
         var msgList = store.messageList;
+        let newMsgList = msgList
 
         var bearName = store.name;
         var intro = `Welcome! My name is ${bearName}. Nice to meet you!`;
@@ -149,12 +178,13 @@ function GlobalStoreContextProvider(props) {
             message: intro
         }
 
-        if(!msgList.some(msgObj => (msgObj.sender === bearName && msgObj.message === intro)))
-            msgList.push(msg);
+        if(!msgList.some(msgObj => (msgObj.sender === bearName && msgObj.message === intro))){
+            newMsgList = [...msgList, msg]
+        }
 
         storeReducer({
             type: GlobalStoreActionType.ADD_NEW_MSG,
-            payload: msgList
+            payload: newMsgList
         });
     }
 
@@ -192,6 +222,43 @@ function GlobalStoreContextProvider(props) {
             type: GlobalStoreActionType.UPDATE_NAME,
             payload: name
         });
+    }
+
+    store.calculateWinner = () => {
+        console.log("calculateWinner");
+
+        const gameGrid = store.gameGrid;
+        const possibleStreak = [
+          [0, 1, 2],
+          [3, 4, 5],
+          [6, 7, 8],
+          [0, 3, 6],
+          [1, 4, 7],
+          [2, 5, 8],
+          [0, 4, 8],
+          [2, 4, 6]
+        ];
+        for (let i = 0; i < possibleStreak.length; i++) {
+          const [a, b, c] = possibleStreak[i];
+          if (gameGrid[a] && gameGrid[a] === gameGrid[b] && gameGrid[a] === gameGrid[c]) {
+            if(gameGrid[a] === 1){
+                console.log("You win!");
+                storeReducer({
+                    type: GlobalStoreActionType.GAME_FINISH,
+                    payload: 1
+                });
+            }
+            else{
+                console.log("You lose!");
+                storeReducer({
+                    type: GlobalStoreActionType.GAME_FINISH,
+                    payload: 0
+                });
+            }
+            // return squares[a];
+          }
+        }
+        // return null;
     }
 
     return (

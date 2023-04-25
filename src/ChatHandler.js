@@ -82,8 +82,7 @@ const SpeechRecognizer = () => {
         
         if(store){
             if(!SpeechRecognition.browserSupportsSpeechRecognition()) {
-                store.addMessage('Warning', "Warning! The current Browser does not Support Speech Recognition.");
-                store.addMessage('Warning', "If your browser is Firefox, you may want to visit about:config & turn on the following flags: 1) media.webspeech.recognition.enable & 2) media.webspeech.recognition.force_enable");
+                store.addMessage('Warning', "Warning! The current Browser does not Support Speech Recognition. If your browser is Firefox, you may want to visit about:config & turn on the following flags: 1) media.webspeech.recognition.enable & 2) media.webspeech.recognition.force_enable");
             }
             else{
                 console.log("recording");
