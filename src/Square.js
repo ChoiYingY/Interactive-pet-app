@@ -39,7 +39,6 @@ const Square = (props) => {
 
     useEffect(()=> {
         if(store && store.gameGrid){
-            console.log("hi");
             if(userTurn){
                 let response = GameBot.calculateWinner(store.gameGrid);
                 console.log(store.gameGrid);
@@ -59,6 +58,12 @@ const Square = (props) => {
                     store.concludeGame(response);
                 }
                 setUserTurn(false);
+            }
+            else{
+                let response = GameBot.calculateWinner(store.gameGrid);
+                if(response !== null){
+                    store.concludeGame(response);
+                }
             }
         }
     }, [store && store.gameGrid])

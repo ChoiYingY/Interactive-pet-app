@@ -79,13 +79,13 @@ const GameConclusion = () => {
 
     if(store && store.finish_game > -1){
         const winnerFlag = store.finish_game;
-        let conclusion = "Tie";
+        let conclusion = "Game tie! Great game.";
 
         if(winnerFlag === 0)
-           conclusion = "You lose.";
+           conclusion = "You lose. Try again next time.";
         else if(winnerFlag === 1)
-           conclusion = "You Win!";
-        GameConclusion = <Typography variant="h1" sx={{marginTop: "3.5%"}}>{conclusion}</Typography>
+           conclusion = "Congratulation for your win!";
+        GameConclusion = <Typography variant="h3" sx={{marginTop: "3.5%"}}>{conclusion}</Typography>
     }
 
 

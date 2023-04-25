@@ -1,18 +1,14 @@
 export function isFreeSquare(gameGrid, index){
     if(gameGrid === null || index === null)
         return;
-
-    console.log("isFreeSquare");
-    console.log(index, gameGrid[index] === null);
     return gameGrid[index] === null;
 }
 
-export function chooseSquare(gameGrid, index){
+export function chooseSquare(gameGrid, index, squareValue){
     if(gameGrid === null || index === null || !isFreeSquare(gameGrid, index))
         return false;
 
-    console.log("chooseSquare");
-    gameGrid[index] = 0;
+    gameGrid[index] = squareValue;
     return true;
 }
 
@@ -20,11 +16,8 @@ export function allFreeSquares(gameGrid){
     if(gameGrid === null)
         return;
 
-    console.log("allFreeSquares");
-    
     let freeSquares = []
     for(let i = 0; i < gameGrid.length; i++){
-        console.log(i);
         if (isFreeSquare(gameGrid, i))
             freeSquares.push(i);
     }
@@ -40,7 +33,7 @@ export function copyGrid(gameGrid){
 }
 
 export function calculateWinner(gameGrid){
-    console.log("calculateWinner");
+    // console.log("calculateWinner");
 
     if(gameGrid){
         const possibleStreak = [
@@ -55,7 +48,18 @@ export function calculateWinner(gameGrid){
         ];
         for (let i = 0; i < possibleStreak.length; i++) {
             const [a, b, c] = possibleStreak[i];
-            if (gameGrid[a] && gameGrid[a] === gameGrid[b] && gameGrid[a] === gameGrid[c]) {
+
+            // console.log(`*******************************************************`);
+            // console.log(`[${a}, ${b}, ${c}]`);
+            // console.log(`a: ${gameGrid[a]}`);
+            // console.log(`b: ${gameGrid[b]}`);
+            // console.log(`c: ${gameGrid[c]}`);
+            // console.log(`*******************************************************`);
+
+            let winning = gameGrid[a] !== null && gameGrid[a] === gameGrid[b] && gameGrid[a] === gameGrid[c];
+            console.log(`winning: ${winning}`);
+
+            if(winning) {
                 return gameGrid[a];
             }
         }
@@ -73,27 +77,61 @@ export function selectSquare(gameGrid){
 
     const possibleChoices = allFreeSquares(gameGrid);
     const length = possibleChoices.length;
+
     console.log(possibleChoices)
     console.log(length)
 
     for(let i = 0; i < length; i++){
         let simulationGrid = copyGrid(gameGrid);
-        console.log("Start simulation");
+        let index = possibleChoices[i];
+        // console.log(`Start simulation @ index ${index}`);
         console.log(simulationGrid);
 
-        let possibleMove = chooseSquare(simulationGrid, i);
+        let possibleMove = chooseSquare(simulationGrid, index, 0);
         if(possibleMove){
-            console.log("chooseSquare");
-            console.log(simulationGrid);
-            if(calculateWinner(simulationGrid)){
-                console.log("break");
-                return i;
+            // console.log("chooseSquare");
+            // console.log(simulationGrid);
+            let winner = calculateWinner(simulationGrid);
+            console.log(`winner: ${winner} at simulationGrid of index ${index}`);
+        
+            if(winner !== null && winner === 0){
+                // console.log("break: ${i}");
+                return index;
+            }
+
+            console.log("---------------------------------------------------------------")
+            console.log("guess user's move");
+            const nextPossibleChoices = allFreeSquares(simulationGrid);
+            console.log(nextPossibleChoices);
+            console.log("nextPossibleChoices^");
+            for(let j = 0; j < nextPossibleChoices.length; j++){
+                let simulationGrid2 = copyGrid(simulationGrid);
+                let index2 = nextPossibleChoices[j];
+
+                // console.log(`Start simulation2 @ index ${j}`);
+                console.log(simulationGrid2);
+                console.log("---------------------------------------------------------------")
+
+                let nextPossibleMove = chooseSquare(simulationGrid2, index2, 1);
+                if(nextPossibleMove){
+                    // console.log("user chooseSquare");
+                    console.log(simulationGrid2);
+                    console.log("*******************************************************");
+
+                    let winner2 = calculateWinner(simulationGrid2);
+                    console.log(`winner: ${winner2} at simulationGrid2 of index ${j}`);
+                    if(winner2 !== null && winner2 === 1){
+                        console.log("user may win here! I'm going to block.");
+                        return index2;
+                    }
+                }
             }
         }
     }
     if(length > 0){
         const index = Math.floor(Math.random() * length);
         console.log(index);
+        console.log("do a random pick")
         return possibleChoices[index];
     }
     else
