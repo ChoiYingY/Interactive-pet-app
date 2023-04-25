@@ -6,7 +6,7 @@ import GltfModel from "./gltfModel";
 
 const ModelViewer = ({ modelPath, position = [0, 0, 0] }) => {
   return (
-    <Canvas style={{ background: "#B6977D", height:"500px"}}>
+    <Canvas style={{ background: "var(--model-bgColor)", height:"500px"}}>
       <ambientLight intensity={0.3} />
       <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
       <pointLight position={[-10, -10, -10]} />

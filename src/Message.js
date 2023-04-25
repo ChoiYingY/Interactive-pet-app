@@ -62,8 +62,8 @@ const Message = (props) => {
                 {message}
             </Typography>;
 
-    let icon = <Box sx={[ msg_style.box, {bgcolor: '#7DA6B6'} ]}>
-                    <Avatar sx={[ msg_style.icon, { bgcolor: '#7DA6B6' } ]}>
+    let icon = <Box sx={[ msg_style.box, {bgcolor: 'var(--primary-color)'} ]}>
+                    <Avatar sx={[ msg_style.icon, { bgcolor: 'var(--primary-color)' } ]}>
                         <AndroidIcon/>
                     </Avatar>
                 </Box>

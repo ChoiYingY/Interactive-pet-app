@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useRef } from "react";
 
 import { GlobalStoreContext } from './Store';
 
@@ -11,9 +11,7 @@ import EmojiPicker from 'emoji-picker-react';
 const InputField = () => {
     const { store } = useContext(GlobalStoreContext);
     const [msg, setMsg] = useState("");
-
-    if(store)
-        console.log(store.is_choosing_emoji)
+    const inputRef = useRef(null);
 
     function handleMsgUpdate(event){
         event.stopPropagation();
@@ -27,7 +25,7 @@ const InputField = () => {
 
         console.log(msg);
         store.addMessage('User', msg);
-        store.respondMessage();
+        store.respondMessage(msg);
         
         setMsg("");
         
@@ -55,27 +53,37 @@ const InputField = () => {
             store.startChoosingEmoji();
             console.log(store.is_choosing_emoji);
         }
+        inputRef.current.focus();
     }
 
-    function handleMouseOver(event){
+    function handleMouseEnter(event){
         event.stopPropagation();
-        console.log("handleMouseOver");
+        console.log("handleMouseEnter");
 
         if(store){
             if(!store.is_choosing_emoji){
                 store.startChoosingEmoji();
             }
         }
+        inputRef.current.focus();
     }
 
-    function handleMouseOut(event){
+    function handleMouseLeave(event){
         event.stopPropagation();
-        console.log("handleMouseOut");
+        console.log("handleMouseLeave");
 
         if(store){
             if(store.is_choosing_emoji){
                 store.stopChoosingEmoji();
             }
+        }
+        inputRef.current.focus();
+    }
+
+    function handleEmojiClick(event){
+        if(event && event.emoji){
+            let insertedEmoji = msg.concat(event.emoji);
+            setMsg(insertedEmoji);
         }
     }
     
@@ -84,10 +92,10 @@ const InputField = () => {
         <div
             id="EmojiPickerContainer"
             style={{ visibility: (store && store.is_choosing_emoji) ? 'visible' : 'hidden' }}
-            onMouseEnter={handleMouseOver}
-            onMouseLeave={handleMouseOut}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
         >
-            <EmojiPicker/>
+            <EmojiPicker onEmojiClick={handleEmojiClick}/>
         </div>
         <TextField
                 margin="normal"
@@ -97,6 +105,7 @@ const InputField = () => {
                 value={msg}
                 onChange={handleMsgUpdate}
                 onKeyPress={handleKeyPress}
+                inputRef={inputRef}
 
                 sx={{ backgroundColor:"white", width: "92.5%", position:"absolute", left: "4.5vw" }}
 
@@ -108,7 +117,7 @@ const InputField = () => {
                     ),
                     endAdornment: (
                         <InputAdornment position="end" onClick={ handleSendMsg }>
-                            <SendIcon style={{ color: '#7DA6B6' }} />
+                            <SendIcon style={{ color: 'var(--primary-color)' }} />
                         </InputAdornment>
                     )
                 }}

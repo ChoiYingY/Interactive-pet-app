@@ -1,11 +1,10 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 
 import Message from "./Message";
 import ChatHandler from './ChatHandler';
 import { GlobalStoreContext } from './Store';
 
 import { Grid } from '@mui/material';
-import EmojiPicker from 'emoji-picker-react';
 
 const style = {
     flexColumn: {
@@ -17,7 +16,7 @@ const style = {
     },
     chatbox: {
         width:"70vw",
-        backgroundColor: "#cfdce1",
+        backgroundColor: "var(--background-color)",
         justifyContent:"space-between",
         position: "relative"
     },

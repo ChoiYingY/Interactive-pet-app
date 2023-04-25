@@ -4,7 +4,7 @@ import ChatBox from "./ChatBox";
 import ModelViewer from "./ModelViewer";
 import { GlobalStoreContext } from "./Store";
 
-// import VoiceRecorder from "./VoiceRecorder";
+import BearRenamer from "./BearRenamer";
 
 import { Button, Box, Grid } from "@mui/material";
 
@@ -19,13 +19,13 @@ const HomeScreen = () => {
             width: "12.5vw",
             margin: "2.5%",
             padding: "2.55%",
-            backgroundColor: "#7DA6B6",
+            backgroundColor: "var(--primary-color)",
             color: "white",
             float: "left"
         },
         hover: {
             '&.MuiButton-root:hover':{
-                backgroundColor: '#95C1D2'
+                backgroundColor: 'var(--secondary-color)'
             }
         }
     }
@@ -43,16 +43,19 @@ const HomeScreen = () => {
 
     function handleRename(event){
         event.stopPropagation();
+        console.log("now rename the bear");
+        store.startEnteringName();
     }
 
     useEffect(()=> {
-        store.selfIntroduction();
+        if(store)
+            store.selfIntroduction();
     }, [])
 
     return(
         <Grid className="homeScreen">
             <Grid className='home'>
-                {/* <VoiceRecorder/> */}
+                <BearRenamer/>
                 
                 <Box className="pet">
                     <div className="status">

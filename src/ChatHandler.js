@@ -4,7 +4,7 @@ import InputField from "./InputField";
 import { GlobalStoreContext } from './Store';
 
 import MicIcon from '@mui/icons-material/Mic';
-import { Grid, Button, Avatar, TextField, InputAdornment } from "@mui/material";
+import { Grid, Button, Avatar } from "@mui/material";
 
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
@@ -14,8 +14,17 @@ const style = {
         flexDirection:"column",
         alignItems:"center"
     },
+    avatar: {
+        base: {
+            bgcolor: 'var(--primary-color)',
+            position:"absolute"
+        },
+        '&:hover': {
+            bgcolor: 'var(--secondary-color)'
+        }
+    },
     btn: {
-        backgroundColor: '#7DA6B6',
+        backgroundColor: 'var(--primary-color)',
         color:"white",
         width: "100%",
         height: "56px",
@@ -24,7 +33,7 @@ const style = {
     },
     btnHoverSx: {
         '&.MuiButton-root:hover':{
-            backgroundColor: '#95C1D2'
+            backgroundColor: 'var(--secondary-color)'
         }
     },
     msgPlaceHolder: {
@@ -97,7 +106,7 @@ const SpeechRecognizer = () => {
             </Button>
         : (<Grid sx={ style.inputGrid } >
                 <Avatar
-                    sx={{ bgcolor: '#7DA6B6', position:"absolute" }}
+                    sx={ [ style.avatar, style.avatar.base ] }
                     onClick={handleStartRecording}
                 >
                     <MicIcon/>
