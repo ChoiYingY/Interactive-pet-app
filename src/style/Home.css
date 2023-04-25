@@ -13,7 +13,7 @@
     bottom: 0;
     left: 0;
   
-    background-color: #B6977D;
+    background-color: var(--model-bgColor);
   
     display: flex;
     flex-direction: row;
@@ -50,4 +50,27 @@
     position: absolute;
     left: 4.5vw;
     bottom: 4vh;
+}
+
+.modal-box{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #7DA6B6;
+
+    height: 50vh;
+    width: 70vh;
+    box-shadow: 24;
+    border-radius: 5%;
+}
+
+#modal-content{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 40vh;
+    width: 62.5vh;
+    color: white
 }

@@ -1,3 +1,14 @@
+:root {
+  --primary-color: #7DA6B6;
+  --secondary-color: #95C1D2;
+  --trinary-color: #DF9898;
+  --trinary-dark: #e37b7b;
+  --background-color: #cfdce1;
+  /* --trinary-color: #ff9ab1; */
+  --model-bgColor: #B6977D;
+  --my-font-family: "Lexend Exa";
+}
+
 .App {
   text-align: center;
 }
