@@ -78,7 +78,7 @@ const BearRenamer = () => {
             setUpdatedName(false);
             store.addMessage(name, `YAY I am now renamed to ${name}! (●゜㉨ ゜●)`);
         }
-    }, [store.name])
+    }, [store && store.name])
   
     function handleNameUpdate(event){
         event.stopPropagation();

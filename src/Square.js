@@ -1,4 +1,7 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+
+// import GameBot from "./GameBot";
+import * as GameBot from './GameBot.js'
 
 import GlobalStoreContext from './Store';
 
@@ -8,6 +11,7 @@ const Square = (props) => {
     const squareValue = props.value;
     const index = props.index;
 
+    const [userTurn, setUserTurn] = useState(false);
     const {store} = useContext(GlobalStoreContext);
 
     const style = {
@@ -23,24 +27,54 @@ const Square = (props) => {
             justifyContent: "center",
             alignItems: "center"
         },
-        btn_hover: {
+        btn_effect: {
             '&.MuiButton-root:hover':{
                 backgroundColor: 'var(--secondary-color)'
+            },
+            '&.MuiButton-root:disabled':{
+                backgroundColor: 'gray'
             }
         }
     }
+
+    useEffect(()=> {
+        if(store && store.gameGrid){
+            console.log("hi");
+            if(userTurn){
+                let response = GameBot.calculateWinner(store.gameGrid);
+                console.log(store.gameGrid);
+                console.log(response);
+                if(response === null){
+                    let botChoice = GameBot.selectSquare(store.gameGrid);
+                    console.log("botChoice");
+                    console.log(botChoice);
+                    if(botChoice == -1){
+                        store.concludeGame(2);
+                    }
+                    else{
+                        store.chooseSquare(store.name, botChoice);
+                    }
+                }
+                else{
+                    store.concludeGame(response);
+                }
+                setUserTurn(false);
+            }
+        }
+    }, [store && store.gameGrid])
 
     function handleChosenSquare(event){
         event.stopPropagation();
 
         console.log(index);
+        setUserTurn(true);
         store.chooseSquare('User', index);
     }
 
     let squarePlaceHolder = <Button
-        sx={[ style.square, style.btn_hover ]}
+        sx={[ style.square, style.btn_effect ]}
         onClick={handleChosenSquare}
-        disabled={squareValue !== null}
+        disabled={squareValue !== null || (store && (store.finish_game > -1))}
     >
         { squareValue }
     </Button>;

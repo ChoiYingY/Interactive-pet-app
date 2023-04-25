@@ -23,7 +23,7 @@ const InputField = () => {
             setPushMsg(false);
             setMsg("");
         }
-    }, [store.messageList]);
+    }, [store && store.messageList]);
 
     function handleMsgUpdate(event){
         event.stopPropagation();

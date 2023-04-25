@@ -46,12 +46,6 @@ const GameScreen = () => {
         return <Square key={index} index={index} value={squareValue}/>
     });
 
-    useEffect(()=> {
-        if(store){
-            store.calculateWinner();
-        }
-    }, [store.gameGrid])
-
     return <Grid sx={ style.grid }>
         <GameConclusion/>
         <Typography variant="h1" sx={{marginTop: "1.5%"}}>Tic-Tac-Toe</Typography>

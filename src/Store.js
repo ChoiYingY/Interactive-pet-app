@@ -224,42 +224,54 @@ function GlobalStoreContextProvider(props) {
         });
     }
 
-    store.calculateWinner = () => {
-        console.log("calculateWinner");
-
-        const gameGrid = store.gameGrid;
-        const possibleStreak = [
-          [0, 1, 2],
-          [3, 4, 5],
-          [6, 7, 8],
-          [0, 3, 6],
-          [1, 4, 7],
-          [2, 5, 8],
-          [0, 4, 8],
-          [2, 4, 6]
-        ];
-        for (let i = 0; i < possibleStreak.length; i++) {
-          const [a, b, c] = possibleStreak[i];
-          if (gameGrid[a] && gameGrid[a] === gameGrid[b] && gameGrid[a] === gameGrid[c]) {
-            if(gameGrid[a] === 1){
-                console.log("You win!");
-                storeReducer({
-                    type: GlobalStoreActionType.GAME_FINISH,
-                    payload: 1
-                });
-            }
-            else{
-                console.log("You lose!");
-                storeReducer({
-                    type: GlobalStoreActionType.GAME_FINISH,
-                    payload: 0
-                });
-            }
-            // return squares[a];
-          }
-        }
-        // return null;
+    store.concludeGame = (flag) =>{
+        storeReducer({
+            type: GlobalStoreActionType.GAME_FINISH,
+            payload: flag
+        });
     }
+
+    // store.calculateWinner = () => {
+    //     console.log("calculateWinner");
+
+    //     const gameGrid = store.gameGrid;
+    //     const possibleStreak = [
+    //       [0, 1, 2],
+    //       [3, 4, 5],
+    //       [6, 7, 8],
+    //       [0, 3, 6],
+    //       [1, 4, 7],
+    //       [2, 5, 8],
+    //       [0, 4, 8],
+    //       [2, 4, 6]
+    //     ];
+    //     for (let i = 0; i < possibleStreak.length; i++) {
+    //       const [a, b, c] = possibleStreak[i];
+    //       if (gameGrid[a] && gameGrid[a] === gameGrid[b] && gameGrid[a] === gameGrid[c]) {
+    //         if(gameGrid[a] === 1){
+    //             console.log("You win!");
+    //             storeReducer({
+    //                 type: GlobalStoreActionType.GAME_FINISH,
+    //                 payload: 1
+    //             });
+    //         }
+    //         else{
+    //             console.log("You lose!");
+    //             storeReducer({
+    //                 type: GlobalStoreActionType.GAME_FINISH,
+    //                 payload: 0
+    //             });
+    //         }
+    //       }
+    //     }
+    //     // if(!gameGrid.includes(-1)){
+    //     //     console.log("Tie!");
+    //     //         storeReducer({
+    //     //             type: GlobalStoreActionType.GAME_FINISH,
+    //     //             payload: 2
+    //     //         });
+    //     // }
+    // }
 
     return (
         <GlobalStoreContext.Provider value={{ store }}>

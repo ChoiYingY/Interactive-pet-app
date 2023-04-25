@@ -1,54 +1,101 @@
-import react, { useState } from 'react';
+export function isFreeSquare(gameGrid, index){
+    if(gameGrid === null || index === null)
+        return;
 
-const GameBot = () => {
-    function hasWinner(){
-        // if (len(self.moves) < 5):
-        //     return None
-        
-        // # check rows for win
-        // for row in range(self.dimension):
-        //     unique_rows = set(self.grid[row])
-        //     if (len(unique_rows) == 1):
-        //         value = unique_rows.pop()
-        //         if (value != None):
-        //             return value
-                    
-        // # check columns for win
-        // for col in range(self.dimension):
-        //     unique_cols = set()
-        //     for row in range(self.dimension):
-        //         unique_cols.add(self.grid[row][col])
+    console.log("isFreeSquare");
+    console.log(index, gameGrid[index] === null);
+    return gameGrid[index] === null;
+}
 
-        //     if (len(unique_cols) == 1):
-        //         value = unique_cols.pop()
-        //         if (value != None):
-        //             return value
+export function chooseSquare(gameGrid, index){
+    if(gameGrid === null || index === null || !isFreeSquare(gameGrid, index))
+        return false;
 
-        // # check backwards diagonal (top left to bottom right) for win
-        // backwards_diag = set()
-        // backwards_diag.add(self.grid[0][0])
-        // backwards_diag.add(self.grid[1][1])
-        // backwards_diag.add(self.grid[2][2])
+    console.log("chooseSquare");
+    gameGrid[index] = 0;
+    return true;
+}
 
-        // if (len(backwards_diag) == 1):
-        //     value = backwards_diag.pop()
-        //     if (value != None):
-        //         return value
+export function allFreeSquares(gameGrid){
+    if(gameGrid === null)
+        return;
 
-        // # check forwards diagonal (bottom left to top right) for win
-        // forwards_diag = set()
-        // forwards_diag.add(self.grid[2][0])
-        // forwards_diag.add(self.grid[1][1])
-        // forwards_diag.add(self.grid[0][2])
+    console.log("allFreeSquares");
+    
+    let freeSquares = []
+    for(let i = 0; i < gameGrid.length; i++){
+        console.log(i);
+        if (isFreeSquare(gameGrid, i))
+            freeSquares.push(i);
+    }
+    return freeSquares
+}
 
-        // if (len(forwards_diag) == 1):
-        //     value = forwards_diag.pop()
-        //     if (value != None):
-        //         return value
-        
-        // # found no winner, return None
-        // return None
+export function copyGrid(gameGrid){
+    if(gameGrid === null)
+        return;
+
+    console.log("copyGrid");
+    return gameGrid.slice(0);
+}
+
+export function calculateWinner(gameGrid){
+    console.log("calculateWinner");
+
+    if(gameGrid){
+        const possibleStreak = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6]
+        ];
+        for (let i = 0; i < possibleStreak.length; i++) {
+            const [a, b, c] = possibleStreak[i];
+            if (gameGrid[a] && gameGrid[a] === gameGrid[b] && gameGrid[a] === gameGrid[c]) {
+                return gameGrid[a];
+            }
+        }
+        return null;
     }
 }
 
-export default GameBot;
+
+export function selectSquare(gameGrid){
+    if(gameGrid === null)
+        return -1;
+
+    console.log("selectSquare");
+    console.log(gameGrid);
+
+    const possibleChoices = allFreeSquares(gameGrid);
+    const length = possibleChoices.length;
+    console.log(possibleChoices)
+    console.log(length)
+
+    for(let i = 0; i < length; i++){
+        let simulationGrid = copyGrid(gameGrid);
+        console.log("Start simulation");
+        console.log(simulationGrid);
+
+        let possibleMove = chooseSquare(simulationGrid, i);
+        if(possibleMove){
+            console.log("chooseSquare");
+            console.log(simulationGrid);
+            if(calculateWinner(simulationGrid)){
+                console.log("break");
+                return i;
+            }
+        }
+    }
+    if(length > 0){
+        const index = Math.floor(Math.random() * length);
+        console.log(index);
+        return possibleChoices[index];
+    }
+    else
+        return -1;
+}

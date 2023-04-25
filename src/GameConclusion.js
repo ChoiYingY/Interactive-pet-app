@@ -25,18 +25,18 @@ const style = {
 }
 
 const GameConclusion = () => {
-    let { store } = useContext(GlobalStoreContext);
     let history = useHistory();
-    // const [gameFinished, setGameFinished] = useState((store) ? store.finish_game : -1);
+    let { store } = useContext(GlobalStoreContext);
+    const [openWindow, setOpenWindow] = useState((store && store.finish_game > 0) ? true : false);
 
 
-    // useEffect(()=> {
-    //     if(store){
-    //         const finish_game = store.finish_game;
-    //         console.log(`gameFinished: ${finish_game}`);
-    //         setGameFinished(finish_game);
-    //     }
-    // }, [store.finish_game])
+    useEffect(()=> {
+        if(store){
+            const finish_game = store.finish_game;
+            console.log(`openWindow: ${finish_game}`);
+            setOpenWindow((finish_game > 0) ? true : false);
+        }
+    }, [store.finish_game])
 
     const btn_style = {
         base:{
@@ -70,16 +70,10 @@ const GameConclusion = () => {
         history.push('/');
     }
 
-    // function handleClearName(event){
-    //     event.stopPropagation();
-    //     setName("");
-    // }
-
-    // function handleCloseWindow(event){
-    //     event.stopPropagation();
-    //     setName("");
-    //     store.stopEnteringName();
-    // }
+    function handleCloseWindow(event){
+        event.stopPropagation();
+        setOpenWindow(false);
+    }
 
     let GameConclusion = "";
 
@@ -91,19 +85,29 @@ const GameConclusion = () => {
            conclusion = "You lose.";
         else if(winnerFlag === 1)
            conclusion = "You Win!";
-        GameConclusion = <Typography variant="h1">{conclusion}</Typography>
+        GameConclusion = <Typography variant="h1" sx={{marginTop: "3.5%"}}>{conclusion}</Typography>
     }
 
 
     return(
-        <Modal sx={{style}} open={(store && store.finish_game > -1)}>
+        <Modal sx={{style}} open={(store && (store.finish_game > -1) && openWindow)}>
             <div className="modal-box">
                 
                 <div id="modal-content">
+                    <Grid sx={{display: "flex", justifyContent: "flex-end"}}>
+                        <Button
+                            sx={[ btn_style.default, btn_style.hover ]}
+                            onClick={handleCloseWindow}
+                        >
+                            X
+                        </Button>
+                    </Grid>
+                    
                     {GameConclusion}
+
                     <Grid>
                         <Button
-                            sx={[ btn_style.default, btn_style.hover, btn_style.base, { marginLeft: 0, marginTop: "10%" } ]}
+                            sx={[ btn_style.default, btn_style.hover, btn_style.base, { marginLeft: 0, marginTop: "5%" } ]}
                             onClick={handleReplay}
                         >
                             Replay
