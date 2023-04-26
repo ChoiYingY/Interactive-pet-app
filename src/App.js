@@ -23,8 +23,7 @@ function App() {
   return (
     <BrowserRouter>
       <GlobalStoreContextProvider>
-        {!isLoading
-          ? (
+        {!isLoading ? (
             <div>
               <NavBar/>
               <Switch>

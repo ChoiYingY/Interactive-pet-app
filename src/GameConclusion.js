@@ -3,7 +3,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { GlobalStoreContext } from "./Store";
 import { useHistory } from "react-router-dom";
 
-import { Modal, Typography, TextField, Button, Grid } from "@mui/material";
+import { Modal, Typography, Button, Grid } from "@mui/material";
 
 const style = {
     top: 0,
@@ -34,7 +34,7 @@ const GameConclusion = () => {
         if(store){
             const finish_game = store.finish_game;
             console.log(`openWindow: ${finish_game}`);
-            setOpenWindow((finish_game > 0) ? true : false);
+            setOpenWindow((finish_game > -1) ? true : false);
         }
     }, [store.finish_game])
 

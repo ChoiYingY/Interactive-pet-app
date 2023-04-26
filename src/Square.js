@@ -47,7 +47,7 @@ const Square = (props) => {
                     let botChoice = GameBot.selectSquare(store.gameGrid);
                     console.log("botChoice");
                     console.log(botChoice);
-                    if(botChoice == -1){
+                    if(botChoice === -1){
                         store.concludeGame(2);
                     }
                     else{

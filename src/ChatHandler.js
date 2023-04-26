@@ -1,12 +1,12 @@
-import React, { useState, useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 
 import InputField from "./InputField";
 import { GlobalStoreContext } from './Store';
 
 import MicIcon from '@mui/icons-material/Mic';
-import { Grid, Button, Avatar } from "@mui/material";
+import { Grid, Button, Avatar, Typography } from "@mui/material";
 
-import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import { useSpeechContext } from '@speechly/react-client';
 
 const style = {
     flexColumn: {
@@ -40,7 +40,7 @@ const style = {
         width: "95%",
         height: "10vh",
         position: "absolute",
-        bottom: "0",
+        bottom: "1.5%",
         display:"flex",
         justifyContent:"space-around",
         alignItems:"center",
@@ -54,68 +54,80 @@ const style = {
         alignItems: "center",
         justifyContent: "space-between",
         position: "relative"
-    }
+    },
+    msgDisplayer:{
+        display: "block",
+        position: "absolute",
+        padding: "10px",
+        width: "60vw",
+        minHeight: "10vh",
+        bottom: "11vh",
+        borderRadius: "5px",
+        color: "white",
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
+    } 
 }
 
 const SpeechRecognizer = () => {
     const { store } = useContext(GlobalStoreContext);
 
-    const [isRecording, setIsRecording] = useState(false);
+    const [msg, setMsg] = useState("");
+    const [pushMsg, setPushMsg] = useState(false);
 
-    const { transcript, resetTranscript } = useSpeechRecognition(
-        {onResult: (result) => {
-            console.log(result)
-        }}
-    );
+    const { segment, listening, attachMicrophone, start, stop } = useSpeechContext();
 
-    function handleStopRecording(event){
-        event.stopPropagation();
-
-        setIsRecording(false);
-        SpeechRecognition.stopListening();
-
-        console.log(transcript);
-    }
-
-    function handleStartRecording(event){
-        event.stopPropagation();
-        
-        if(store){
-            if(!SpeechRecognition.browserSupportsSpeechRecognition()) {
-                store.addMessage('Warning', "Warning! The current Browser does not Support Speech Recognition. If your browser is Firefox, you may want to visit about:config & turn on the following flags: 1) media.webspeech.recognition.enable & 2) media.webspeech.recognition.force_enable");
-            }
-            else{
-                console.log("recording");
-                setIsRecording(true);
-                
-                SpeechRecognition.startListening({
-                    continuous: true,
-                    language: "en-US"
-                });
-            }
+    useEffect(() => {
+        console.log("store.messageList now update to:");
+        console.log(store.messageList);
+        if(pushMsg){
+            store.respondMessage(msg);
+            setPushMsg(false);
+            setMsg("");
         }
-    }
+    }, [store && store.messageList]);
 
-    let msgPlaceHolder = (isRecording) ?
+    const handleClick = async () => {
+        if(listening){
+            await stop();
+            const transcript = segment.words.map((word) => word.value).join(' ');
+            console.log(transcript)
+            store.addMessage('User', transcript);
+            setPushMsg(true);
+            setMsg(transcript);
+        }
+        else{
+            await attachMicrophone();
+            await start();
+        }
+      };
+
+    let msgPlaceHolder = (listening) ?
             <Button
-                onClick={handleStopRecording}
                 sx={ [ style.btn, style.btnHoverSx ] }
+                onClick={handleClick}
             >
                 Stop Recording
-            </Button>
-        : (<Grid sx={ style.inputGrid } >
-                <Avatar
-                    sx={ [ style.avatar, style.avatar.base ] }
-                    onClick={handleStartRecording}
-                >
-                    <MicIcon/>
-                </Avatar>
-                <InputField/>
-            </Grid>
-        );
+            </Button> :
+            (<Grid sx={ style.inputGrid } >
+                    <Avatar
+                        sx={ [ style.avatar, style.avatar.base ] }
+                        onClick={handleClick}
+                    >
+                        <MicIcon/>
+                    </Avatar>
+                    <InputField/>
+                </Grid>
+            );
 
     return (
         <Grid sx={ style.msgPlaceHolder }>
+            {
+                (listening && segment && segment.words) ?
+                <Grid sx={ style.msgDisplayer }>
+                    <Typography variant="h5">{(segment && segment.words) ? (segment.words.map((w) => w.value).join(" ")) : ""}</Typography>
+                </Grid>
+                : ""
+            }
             {msgPlaceHolder}
         </Grid>
     )
