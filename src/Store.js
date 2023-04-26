@@ -1,3 +1,5 @@
+import api from './SendRequest';
+
 import { createContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
@@ -148,22 +150,72 @@ function GlobalStoreContextProvider(props) {
     }
 
     store.respondMessage = function(senderMsg){
-        senderMsg = senderMsg.toLowerCase();
+        // senderMsg = senderMsg.toLowerCase();
         let bearName = store.name.toLowerCase();
         console.log(bearName);
         console.log(senderMsg);
 
-        if(senderMsg === "game" || senderMsg === "tic-tac-toe" || senderMsg.includes("let's play") || senderMsg.includes("let's play game") || senderMsg.includes("let's play tic-tac-toe")){
+        let match = null;
+
+        const greetRegex = /^\W*(hii*|helloo*)\W*$/i;
+        const farewellRegex = /^\W*((goo+d)*byee*)\W*$/i;
+        const gameRegex = /^\W*(gamee*|tic[-\s]tac[-\s]toe)\W*$/i;
+        const introduceRegex = /^\W*my\s+name\s+is\s+(\w*)\W*$/i;
+        const askNameRegex = /^\W*what[\'s\s]*(is\s+)?your\s+namee*\??\W*$/i;
+        const askDateRegex = /^\W*what[\'s\s]*(is\s+)?today\'?s\s+datee*\??\W*$/i;
+
+        if(gameRegex.exec(senderMsg) !== null){
             store.addMessage(store.name, "Okay! Let's play tic-tac-toe with me!");
             store.startGame();
             return;
         }
-        else if(senderMsg === "hi" || senderMsg === "hello" || senderMsg.includes(`hi ${bearName}`) || senderMsg.includes(`hello ${bearName}`)){
+        else if(askDateRegex.exec(senderMsg) !== null){
+            const date = new Date();
+            store.addMessage(store.name, `Today is ${date}.`);
+            return;
+        }
+        else if((match = senderMsg.match(introduceRegex)) !== null){
+            const name = match[1];
+            store.addMessage(store.name, `Hi ${name}! You have such a cute name.`);
+        }
+        else if(askNameRegex.exec(senderMsg) !== null){
+            store.addMessage(store.name, `My name is ${store.name}🧸. What about you?`);
+            return;
+        }
+        else if(greetRegex.exec(senderMsg) !== null || senderMsg.includes(bearName)){
             store.addMessage(store.name, `Hi User! I am ${store.name}. How are you doing? (*￣(ｴ)￣*)ﾉ`);
             return;
         }
-        store.addMessage(store.name, "Sorry, I'm just a silly bear who don't understead complex human sentences. （´㉨｀*)");
+        else if(farewellRegex.exec(senderMsg) !== null){
+            store.addMessage(store.name, `Bye User👋! I will miss you.`);
+            return;
+        }
+        else{
+            async function analyzeEmotion(){
+                console.log("Analyze emotion");
+                const response = await api.analyzeEmotion(senderMsg);
+                if(!response || response.status !== 200){
+                    store.addMessage(store.name, "Sorry, I'm just a silly bear who don't understead complex human sentences. （´㉨｀*)");
+                }
+                if(response.status === 200){
+                    const result = response.data.result;
+                    console.log(result);
+                    console.log(result.score);
+                    if(result.score > 0){
+                        store.addMessage(store.name, "I see that you are having an overall positive tone. If you're happy, I'm happy for you too! （´㉨｀*)");
+                    }
+                    else if(result.score < 0){
+                        store.addMessage(store.name, "You have an overall negative tone here. Feel better if you are not happy! （´㉨｀*)");
+                    }
+                    else{
+                        store.addMessage(store.name, "You have a neutral tone here. But sorry! I'm a silly bear who don't understead complex human sentences. （´㉨｀*)");
+                    }
+                }
+            }
+            analyzeEmotion();
+        }
     }
+
 
     store.selfIntroduction = function(){
         var msgList = store.messageList;
