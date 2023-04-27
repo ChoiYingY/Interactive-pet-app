@@ -1,8 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 
-// import GameBot from "./GameBot";
-import * as GameBot from './GameBot.js'
-
+import GlobalBotContext from "./Bot";
 import GlobalStoreContext from './Store';
 
 import { Grid, Button, Box } from '@mui/material';
@@ -12,6 +10,7 @@ const Square = (props) => {
     const index = props.index;
 
     const [userTurn, setUserTurn] = useState(false);
+    const {bot} = useContext(GlobalBotContext);
     const {store} = useContext(GlobalStoreContext);
 
     const style = {
@@ -38,20 +37,20 @@ const Square = (props) => {
     }
 
     useEffect(()=> {
-        if(store && store.gameGrid){
+        if(store && bot && store.gameGrid){
+            let response = bot.calculateWinner(store.gameGrid);
             if(userTurn){
-                let response = GameBot.calculateWinner(store.gameGrid);
                 console.log(store.gameGrid);
                 console.log(response);
                 if(response === null){
-                    let botChoice = GameBot.selectSquare(store.gameGrid);
+                    let botChoice = bot.selectSquare(store.gameGrid);
                     console.log("botChoice");
                     console.log(botChoice);
                     if(botChoice === -1){
                         store.concludeGame(2);
                     }
                     else{
-                        store.chooseSquare(store.name, botChoice);
+                        store.chooseSquare(bot.name, botChoice);
                     }
                 }
                 else{
@@ -60,7 +59,6 @@ const Square = (props) => {
                 setUserTurn(false);
             }
             else{
-                let response = GameBot.calculateWinner(store.gameGrid);
                 if(response !== null){
                     store.concludeGame(response);
                 }
@@ -73,7 +71,9 @@ const Square = (props) => {
 
         console.log(index);
         setUserTurn(true);
-        store.chooseSquare('User', index);
+
+        if(store)
+            store.chooseSquare('User', index);
     }
 
     let squarePlaceHolder = <Button
@@ -103,6 +103,18 @@ const Square = (props) => {
                 sx = {{ width: "100%", height: "auto"}}
             />
         </Grid>
+    }
+
+    if(store === null){
+        return <Grid>
+            <Button
+                sx={[ style.square, style.btn_effect ]}
+                onClick={handleChosenSquare}
+                disabled={squareValue !== null}
+            >
+                { squareValue }
+            </Button>;
+        </Grid>;
     }
 
     return (

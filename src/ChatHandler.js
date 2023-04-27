@@ -1,6 +1,8 @@
 import React, { useContext, useState, useEffect } from "react";
 
 import InputField from "./InputField";
+
+import { GlobalBotContext } from './Bot';
 import { GlobalStoreContext } from './Store';
 
 import MicIcon from '@mui/icons-material/Mic';
@@ -68,7 +70,8 @@ const style = {
     } 
 }
 
-const SpeechRecognizer = () => {
+const ChatHandler = () => {
+    const { bot } = useContext(GlobalBotContext);
     const { store } = useContext(GlobalStoreContext);
 
     const [msg, setMsg] = useState("");
@@ -77,12 +80,18 @@ const SpeechRecognizer = () => {
     const { segment, listening, attachMicrophone, start, stop } = useSpeechContext();
 
     useEffect(() => {
-        console.log("store.messageList now update to:");
-        console.log(store.messageList);
-        if(pushMsg){
-            store.respondMessage(msg);
-            setPushMsg(false);
-            setMsg("");
+        if(store){
+            console.log("ChatHandler useEffect. Store.messageList now update to:");
+            console.log(store.messageList);
+            if(pushMsg){
+                console.log("pushMsg");
+                if(bot){
+                    console.log("bot");
+                    bot.respond(msg);
+                }
+                setPushMsg(false);
+                setMsg("");
+            }
         }
     }, [store && store.messageList]);
 
@@ -91,7 +100,8 @@ const SpeechRecognizer = () => {
             await stop();
             const transcript = segment.words.map((word) => word.value).join(' ');
             console.log(transcript)
-            store.addMessage('User', transcript);
+            if(store)
+                store.addMessage('User', transcript);
             setPushMsg(true);
             setMsg(transcript);
         }
@@ -132,4 +142,4 @@ const SpeechRecognizer = () => {
         </Grid>
     )
 }
-export default SpeechRecognizer;
+export default ChatHandler;

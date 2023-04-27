@@ -58,15 +58,22 @@ const GameConclusion = () => {
             }
         }
     }
+
+    function clearGrid(){
+        if(store)
+            store.clearGrid();
+    }
   
     function handleReplay(event){
         event.stopPropagation();
-        store.clearGrid();
+
+        clearGrid();
     }
 
     function handleGoHome(event){
         event.stopPropagation();
-        store.clearGrid();
+
+        clearGrid();
         history.push('/');
     }
 
@@ -87,7 +94,6 @@ const GameConclusion = () => {
            conclusion = "Congratulation for your win!";
         GameConclusion = <Typography variant="h3" sx={{marginTop: "3.5%"}}>{conclusion}</Typography>
     }
-
 
     return(
         <Modal sx={{style}} open={(store && (store.finish_game > -1) && openWindow)}>

@@ -5,6 +5,7 @@ import './style/LoadingScreen.css';
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { GlobalStoreContextProvider } from './Store';
+import { GlobalBotContextProvider } from './Bot';
 
 import NavBar from "./NavBar";
 import HomeScreen from "./HomeScreen";
@@ -23,17 +24,19 @@ function App() {
   return (
     <BrowserRouter>
       <GlobalStoreContextProvider>
-        {!isLoading ? (
-            <div>
-              <NavBar/>
-              <Switch>
-                  <Route path="/" exact component={HomeScreen}/>
-                  <Route path="/game" exact component={GameScreen}/>
-              </Switch>
-            </div>
-          )
-          : <LoadingScreen/>
-        }
+        <GlobalBotContextProvider>
+          {!isLoading ? (
+              <div>
+                <NavBar/>
+                <Switch>
+                    <Route path="/" exact component={HomeScreen}/>
+                    <Route path="/game" exact component={GameScreen}/>
+                </Switch>
+              </div>
+            )
+            : <LoadingScreen/>
+          }
+        </GlobalBotContextProvider>
       </GlobalStoreContextProvider>
     </BrowserRouter>
     

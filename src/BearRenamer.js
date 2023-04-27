@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 
+import { GlobalBotContext } from "./Bot";
 import { GlobalStoreContext } from "./Store";
 
 import { Modal, Typography, TextField, Button, Grid } from "@mui/material";
@@ -24,10 +25,10 @@ const style = {
 }
 
 const BearRenamer = () => {
-    let { store } = useContext(GlobalStoreContext);
     const [name, setName] = useState("");
-    const [updatedName, setUpdatedName] = useState(false);
 
+    let { store } = useContext(GlobalStoreContext);
+    let { bot } = useContext(GlobalBotContext);
 
     const styles = {
         flexContainer:{
@@ -71,34 +72,37 @@ const BearRenamer = () => {
         }
     }
 
-    useEffect(()=> {
-        if(store && updatedName){
-            let name = store.name;
-            console.log(`Bear's new name: ${name}`);
-            setUpdatedName(false);
-            store.addMessage(name, `YAY I am now renamed to ${name}! (●゜㉨ ゜●)`);
-        }
-    }, [store && store.name])
-  
     function handleNameUpdate(event){
         event.stopPropagation();
         setName(event.target.value);
         console.log(name);
     }
 
-    function handleSubmitName(event){
-        event.stopPropagation();
-
+    function submitName(){
         if(!name || name === "")
             return;
         
-        console.log(`submit ${name}`);
+        if(store && bot){
+            console.log(`submit ${name}`);
         
-        setUpdatedName(true);
-        store.updateName(name);
-        
-        console.log(store)
+            bot.rename(name);
+            store.addMessage(name, `YAY I am now renamed to ${name}! (●゜㉨ ゜●)`);
+            
+            console.log(store)
+        }
         setName("");
+    }
+
+    function handleKeyPress(event){
+        event.stopPropagation();
+        
+        if(event.code === 'Enter' && store)
+            submitName();
+    }
+
+    function handleSubmitName(event){
+        event.stopPropagation();
+        submitName();
     }
 
     function handleClearName(event){
@@ -109,9 +113,10 @@ const BearRenamer = () => {
     function handleCloseWindow(event){
         event.stopPropagation();
         setName("");
-        store.stopEnteringName();
-    }
 
+        if(store)
+            store.stopEnteringName();
+    }
 
     return(
         <Modal sx={{style}} open={store.edit_name}>
@@ -137,6 +142,7 @@ const BearRenamer = () => {
 
                             value={name}
                             onChange={handleNameUpdate}
+                            onKeyPress={handleKeyPress}
                         />
                     </Grid>
                     <Grid>

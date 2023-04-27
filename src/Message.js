@@ -11,7 +11,8 @@ const style = {
         flexDirection:"row",
         alignItems:"center",
         width:"95%",
-        marginBottom: "2%"
+        marginBottom: "2%",
+        wordWrap: "break-word"
     },
     user: {
         justifyContent:"flex-end"

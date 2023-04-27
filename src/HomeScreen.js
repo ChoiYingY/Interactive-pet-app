@@ -1,14 +1,16 @@
 import React, { useState, useEffect, useContext } from "react";
 
 import ChatBox from "./ChatBox";
-import ModelViewer from "./ModelViewer";
-import { GlobalStoreContext } from "./Store";
-
 import BearRenamer from "./BearRenamer";
+import ModelViewer from "./ModelViewer";
+
+import { GlobalBotContext } from "./Bot";
+import { GlobalStoreContext } from "./Store";
 
 import { Button, Box, Grid } from "@mui/material";
 
 const HomeScreen = () => {
+    const { bot } = useContext(GlobalBotContext);
     const { store } = useContext(GlobalStoreContext);
 
     const [choice, setChoice] = useState(0);
@@ -44,12 +46,14 @@ const HomeScreen = () => {
     function handleRename(event){
         event.stopPropagation();
         console.log("now rename the bear");
-        store.startEnteringName();
+
+        if(store)
+            store.startEnteringName();
     }
 
     useEffect(()=> {
-        if(store)
-            store.selfIntroduction();
+        if(bot)
+            bot.selfIntroduction();
     }, [])
 
     return(

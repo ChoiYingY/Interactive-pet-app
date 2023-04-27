@@ -1,6 +1,7 @@
 import React, { useState, useContext, useRef, useEffect } from "react";
 
 import { GlobalStoreContext } from './Store';
+import { GlobalBotContext } from './Bot';
 
 import SendIcon from '@mui/icons-material/Send';
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
@@ -9,6 +10,7 @@ import { TextField, InputAdornment } from "@mui/material";
 import EmojiPicker from 'emoji-picker-react';
 
 const InputField = () => {
+    const { bot } = useContext(GlobalBotContext);
     const { store } = useContext(GlobalStoreContext);
     const [msg, setMsg] = useState("");
     const [pushMsg, setPushMsg] = useState(false);
@@ -17,9 +19,10 @@ const InputField = () => {
 
     useEffect(() => {
         console.log("store.messageList now update to:");
-        console.log(store.messageList);
         if(pushMsg){
-            store.respondMessage(msg);
+            if(bot){
+                bot.respond(msg);
+            }
             setPushMsg(false);
             setMsg("");
         }
@@ -36,11 +39,13 @@ const InputField = () => {
             return;
 
         console.log(msg);
-        store.addMessage('User', msg);
+
+        if(store){
+            store.addMessage('User', msg);
+            console.log(store.messageList);
+        }
 
         setPushMsg(true);
-        
-        console.log(store.messageList);
     }
 
     function handleKeyPress(event){
@@ -64,7 +69,9 @@ const InputField = () => {
             store.startChoosingEmoji();
             console.log(store.is_choosing_emoji);
         }
-        inputRef.current.focus();
+        if(inputRef){
+            inputRef.current.focus();
+        }
     }
 
     function handleMouseEnter(event){
@@ -76,7 +83,9 @@ const InputField = () => {
                 store.startChoosingEmoji();
             }
         }
-        inputRef.current.focus();
+        if(inputRef){
+            inputRef.current.focus();
+        }
     }
 
     function handleMouseLeave(event){
@@ -88,7 +97,9 @@ const InputField = () => {
                 store.stopChoosingEmoji();
             }
         }
-        inputRef.current.focus();
+        if(inputRef){
+            inputRef.current.focus();
+        }
     }
 
     function handleEmojiClick(event){

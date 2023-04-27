@@ -3,16 +3,9 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const Sentiment = require('sentiment');
 
-// const path = require('path');
-// const http = require('http');
-// const WebSocket = require('ws');
-
 dotenv.config()
 const PORT = process.env.PORT || 4000;
 const app = express();
-
-// const server = http.createServer(app);
-// const wss = new WebSocket.Server({ server });
 
 app.use(cors({
     origin: ["http://localhost:3000"],
@@ -25,14 +18,13 @@ app.post('/emotion',
     async function(req, res){
         try{
             const { msg } = req.body;
-            console.log("/emotion");
             console.log(msg);
 
             const sentiment = new Sentiment();
             const score = sentiment.analyze(msg);
 
-            console.log(score);
-            
+            console.log(score)
+
             return res.status(200).json({
                 success: true,
                 result: score

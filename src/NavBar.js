@@ -1,12 +1,12 @@
-import { GlobalStoreContext } from './Store';
+import { GlobalBotContext } from './Bot';
 
 import { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Grid, AppBar, Toolbar, Button } from '@mui/material';
 
 const NavBar = () => {
-    const {store} = useContext(GlobalStoreContext);
     const history = useHistory();
+    const {bot} = useContext(GlobalBotContext);
 
     const btn_style = {
         default:{
@@ -22,6 +22,13 @@ const NavBar = () => {
         }
     }
 
+    function startGame(event){
+        event.stopPropagation();
+        
+        if(bot)
+            bot.startGame()
+    }
+
     return (
         <Grid>
             <AppBar>
@@ -29,7 +36,7 @@ const NavBar = () => {
                     <Button sx={[ btn_style.default, btn_style.hover ]} onClick={()=>history.push("/")}>
                         Home
                     </Button>
-                    <Button sx={[ btn_style.default, btn_style.hover ]} onClick={()=>store.startGame()}>
+                    <Button sx={[ btn_style.default, btn_style.hover ]} onClick={startGame}>
                         Game
                     </Button>
                 </Toolbar>
