@@ -130,7 +130,7 @@ const ChatHandler = () => {
             );
 
     return (
-        <Grid sx={ style.msgPlaceHolder }>
+        <Grid sx={[ style.msgPlaceHolder , { bottom: 0, paddingBottom:"2vh",}]}>
             {
                 (listening && segment && segment.words) ?
                 <Grid sx={ style.msgDisplayer }>

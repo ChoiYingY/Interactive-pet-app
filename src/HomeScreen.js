@@ -14,7 +14,9 @@ const HomeScreen = () => {
     const { store } = useContext(GlobalStoreContext);
 
     const [choice, setChoice] = useState(0);
-    const choices = ["./assets/cube.gltf", "./assets/rook.glb", "./assets/wolfie.glb"];
+    const [prompt, setPrompt] = useState("Start changing clothes");
+
+    const choices = ["./assets/rilakkuma_base.gltf", "./assets/blueT_rilakkuma.gltf", "./assets/purpleT_rilakkuma.gltf", "./assets/yellowT_rilakkuma.gltf"];
 
     const btn_style = {
         default:{
@@ -37,6 +39,10 @@ const HomeScreen = () => {
 
         const nextIndex = (choice + 1) % choices.length;
         setChoice(nextIndex);
+
+        if(nextIndex > 0){
+            setPrompt(`style${nextIndex}`);
+        }
 
         if(nextIndex === 0){
             window.location.reload();
@@ -67,7 +73,7 @@ const HomeScreen = () => {
                             onClick={handleChangeModel}
                             sx={ [ btn_style.default, btn_style.hover, { marginTop: "5vh" } ] }
                         >
-                            Change Model
+                            {prompt}
                         </Button>
                         <Button
                             onClick={handleRename}
