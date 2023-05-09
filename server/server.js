@@ -3,7 +3,6 @@ const axios = require('axios');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const Sentiment = require('sentiment');
-// const JokeAPI = require('sv443-joke-api');
 
 dotenv.config()
 const PORT = process.env.PORT || 4000;

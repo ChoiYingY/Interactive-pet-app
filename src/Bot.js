@@ -259,8 +259,14 @@ function GlobalBotContextProvider(props) {
             return;
         }
         else if((match = senderMsg.match(introduceRegex)) !== null){
-            if(match && match[1])
-                msg = `Hi ${match[1]}! You have such a cute name.`;
+            if(match && match[1]){
+                var name = match[1];
+                msg = `Hi ${name}! You have such a cute name.`;
+
+                if(name === bot.name)
+                    msg += `\nAnd what a coincidence, my name is ${name} too! 😆`;
+            }
+                
         }
         else if(askNameRegex.exec(senderMsg) !== null){
             msg = `My name is ${bot.name}🧸. What about you?`;

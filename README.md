@@ -28,14 +28,15 @@ Open another tab on your terminal and change your current directory to server. T
         <li>Play tic-tac-toe: by entering message such as 'game' / 'tic-tac-toe' / 'tic tac toe' / "let's play game" / "lets play tic-tac-toe", etc. </li>
         <li>Ask date: by entering message such as 'date' / 'day' / "what's the date" / "whats todays date" / "what is todays date?", etc. </li>
         <li>Ask time: by entering message such as 'time' / "what's the current time" / "whats the time" / "what is the current time?", etc. </li>
+        <li>Tell a joke: by entering message such as 'joke' / "tell me a joke, plz" / "can you tell me a joke, please?" / "could you tell me a joke", etc. </li>
       </ul>
    b) Greetings/Questions:<br>
       <ul>
-        <li>Greet 1: by entering message such as 'hi' / 'hello', etc. </li>
+        <li>Greet 1: by entering message such as 'hi' / 'hello', or calling your pet's name, etc. </li>
         <li>Greet 2: by entering message such as 'how are you feeling' / 'how r u doing?', etc. </li>
         <li>Farewell: by entering message such as 'bye' / 'goodbye', 'farewell', etc. </li>
         <li>Introduction 1 (ask name): by entering message such as 'name' / 'whats your name?' / 'what is your name????', etc. </li>
-        <li>Introduction 2 (provide name): by entering message such as 'my name is (insert_your_name)'</li>
+        <li>Introduction 2 (provide name): by entering message such as 'my name is (insert_your_name)'. You will receive a longer response if the pet shares the same name as you!</li>
       </ul>
    c) Analyze text tone:<br>
       <ul>
