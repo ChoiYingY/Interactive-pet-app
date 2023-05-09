@@ -16,7 +16,7 @@ const HomeScreen = () => {
     const [choice, setChoice] = useState(0);
     const [prompt, setPrompt] = useState("Start changing clothes");
 
-    const choices = ["./assets/rilakkuma_base.gltf", "./assets/blueT_rilakkuma.gltf", "./assets/purpleT_rilakkuma.gltf", "./assets/yellowT_rilakkuma.gltf"];
+    const choices = ["./Interactive-pet-app/assets/rilakkuma_base.gltf", "./Interactive-pet-app/assets/blueT_rilakkuma.gltf", "./Interactive-pet-app/assets/purpleT_rilakkuma.gltf", "./Interactive-pet-app/assets/yellowT_rilakkuma.gltf"];
 
     const btn_style = {
         default:{

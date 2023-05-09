@@ -89,7 +89,7 @@ const Square = (props) => {
         squarePlaceHolder = <Grid sx={[style.square, style.square_icon, {backgroundColor: "#84B945"}]}>
         <Box
             component="img"
-            src="./assets/user.png"
+            src="./Interactive-pet-app/assets/user.png"
             sx = {{ width: "100%", height: "auto"}}
         />
     </Grid>
@@ -99,7 +99,7 @@ const Square = (props) => {
         squarePlaceHolder = <Grid sx={[style.square, style.square_icon, {backgroundColor: "#F6C604"}]}>
             <Box
                 component="img"
-                src="./assets/rilakkuma_head.png"
+                src="./Interactive-pet-app/assets/rilakkuma_head.png"
                 sx = {{ width: "100%", height: "auto"}}
             />
         </Grid>

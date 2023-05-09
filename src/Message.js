@@ -91,7 +91,7 @@ const Message = (props) => {
         msg_display = (<Grid item sx={ [ style.main, style.rilakkuma ] }>
             <Box
                 component="img"
-                src="./assets/rilakkuma_icon.png"
+                src="./Interactive-pet-app/assets/rilakkuma_icon.png"
                 sx={[ msg_style.icon, { margin:"10px 20px 10px 0px" } ] }
             />
             {msg}
