@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/Interactive-pet-app/static/css/main.3796f4a5.css",
+    "main.js": "/Interactive-pet-app/static/js/main.b7b56136.js",
+    "static/media/rilakkuma_background2.png": "/Interactive-pet-app/static/media/rilakkuma_background2.c21518f0e2bebe30f11e.png",
+    "static/media/rilakkuma_background.png": "/Interactive-pet-app/static/media/rilakkuma_background.1a5493b2341063e8aa78.png",
+    "index.html": "/Interactive-pet-app/index.html",
+    "main.3796f4a5.css.map": "/Interactive-pet-app/static/css/main.3796f4a5.css.map",
+    "main.b7b56136.js.map": "/Interactive-pet-app/static/js/main.b7b56136.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.3796f4a5.css",
+    "static/js/main.b7b56136.js"
+  ]
+}
