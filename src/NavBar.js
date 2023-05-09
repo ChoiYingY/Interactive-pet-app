@@ -39,6 +39,9 @@ const NavBar = () => {
                     <Button sx={[ btn_style.default, btn_style.hover ]} onClick={startGame}>
                         Game
                     </Button>
+                    <Button sx={[ btn_style.default, btn_style.hover ]} onClick={()=>history.push("/about")}>
+                        About me
+                    </Button>
                 </Toolbar>
             </AppBar>
         </Grid>

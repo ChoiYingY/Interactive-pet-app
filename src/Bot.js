@@ -219,12 +219,12 @@ function GlobalBotContextProvider(props) {
 
         const greetRegex = /^\W*(hii*|helloo*)\W*[\w\W]*$/i
         const farewellRegex = /^\W*(((goo+d)*byee*)|farewell+)\W*[\w\W]*$/i
-        const gameRegex = /^\W*(let(')?s\s*play\s*(a\s)?)?(gamee*|tic[-\s]tac[-\s]toe)\W*[\w\W]*$/i
+        const gameRegex = /^\W*(let(')?s\s*play\s*(a\s)?)?(gamee*|ti+c+[-\s]ta+c+[-\s]to+e+)\W*[\w\W]*$/i
         const introduceRegex = /^\W*my\s+name\s+is\s+([\w\s]*)\W*[\w\W]*$/i
-        const askNameRegex = /^\W*([what]?['s\s]*(is\s+)?your\s+)?namee*\??\W*[\w\W]*$/i
+        const askNameRegex = /^\W*(what['s\s]*(is\s+)?your\s+)?namee*\??\W*[\w\W]*$/i
         const askStatusegex = /^\W*how\s+(are+|r+)\s+(you+|u+)(\s+(feeling+|doing+)\??)?\W*[\w\W]*$/i
-        const askDateRegex = /^\W*([what]?['s\s]*(is\s+)?(today'?s|the)\s+)?(date+|day+)\??\W*[\w\W]*$/i
-        const askTimeRegex = /^\W*([what]?['s\s]*(is\s+)?(current'?s|the(\s+current)?)\s+)?(time+)\??\W*[\w\W]*$/i
+        const askDateRegex = /^\W*(what['s\s]*(is\s+)?(today'?s|the)\s+)?(date+|day+)\??\W*[\w\W]*$/i
+        const askTimeRegex = /^\W*(what['s\s]*(is\s+)?(current'?s|the(\s+current)?)\s+)?(time+)\??\W*[\w\W]*$/i
 
         var msg = ""
 

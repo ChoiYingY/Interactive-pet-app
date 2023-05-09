@@ -97,3 +97,23 @@
     width: 62.5vh;
     color: white
 }
+
+.about{
+    width: 100vw;
+    height: 92vh;
+    
+    position: fixed;
+    bottom: 0;
+    left: 0;
+  
+    background-color: var(--background-color);
+  
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center
+}
+
+#list{
+    font-size: 1.75em;
+}
