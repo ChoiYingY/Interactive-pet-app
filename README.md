@@ -1,8 +1,8 @@
-# Getting Started with Create React App
+# Getting Started with the project
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The development of the app involves with the use of software such as Blender for creating 3D model, as well as JavaScript and its associated frameworks/runtime environment, including React.js, Express.js and Node.js. Speechly API is used for speech-to-text conveby recording user’s audio through microphone and convert to speech
 
-## Available Scripts
+## How to run this project
 
 In the project directory, you can run:
 
@@ -11,60 +11,31 @@ In the project directory, you can run:
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### `cd server` and `nodemon server.js`
 
-### `npm test`
+Open another tab on your terminal and change your current directory to server. Then you will start the Node.js application by executing the server.js file. This application will help on backend server side & provide this web app a real-time communication support. The bot will fail to analyze your text tone without this step.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## App functionality overview
+1. You can click on buttons to change costume / rename your pet on home page
+2. You can play game w/ the bot, which knows how to block your move!
+3. You can send message to the bot by input from keyboard or recording speech (press on the mic button). The Bot will reply back based on the type of your message (case insensitive):<br>
+   a) Commands:<br>
+      <ul>
+        <li>Play tic-tac-toe: by entering message such as 'game' / 'tic-tac-toe' / 'tic tac toe' / "let's play game" / "lets play tic-tac-toe", etc. </li>
+        <li>Ask date: by entering message such as 'date' / 'day' / "what's the date" / "whats todays date" / "what is todays date?", etc. </li>
+        <li>Ask time: by entering message such as 'time' / "what's the current time" / "whats the time" / "what is the current time?", etc. </li>
+      </ul>
+   b) Greetings/Questions:<br>
+      <ul>
+        <li>Greet 1: by entering message such as 'hi' / 'hello', etc. </li>
+        <li>Greet 2: by entering message such as 'how are you feeling' / 'how r u doing?', etc. </li>
+        <li>Farewell: by entering message such as 'bye' / 'goodbye', 'farewell', etc. </li>
+        <li>Introduction 1 (ask name): by entering message such as 'name' / 'whats your name?' / 'what is your name????', etc. </li>
+        <li>Introduction 2 (provide name): by entering message such as 'my name is (insert_your_name)'</li>
+      </ul>
+   c) Analyze text tone:<br>
+      <ul>
+        <li>Positive: if your message has an overall positive word choice</li>
+        <li>Negative: if your message has an overall negative word choice</li>
+        <li>Neutral: if your message has neither positive or negative word choice</li>
+      </ul>
