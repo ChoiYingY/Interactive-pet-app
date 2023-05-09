@@ -20,7 +20,7 @@ const AboutScreen = () => {
             <Grid sx={style.grid}>
                 <Box
                     component="img"
-                    src="./Interactive-pet-app/assets/rilakkuma_intro.png"
+                    src="./assets/rilakkuma_intro.png"
                     sx = {style.divider}
                 />
                 <Grid sx={style.grid}>

@@ -6,6 +6,10 @@ The development of the app involves with the use of software such as Blender for
 
 In the project directory, you can run:
 
+### `npm install --force`
+
+Install all the required packages for this project. It will gives error if you run without '--force'.
+
 ### `npm start`
 
 Runs the app in the development mode.\
