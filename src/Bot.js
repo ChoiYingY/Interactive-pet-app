@@ -225,6 +225,7 @@ function GlobalBotContextProvider(props) {
         const askStatusegex = /^\W*how\s+(are+|r+)\s+(you+|u+)(\s+(feeling+|doing+)\??)?\W*[\w\W]*$/i
         const askDateRegex = /^\W*(what['s\s]*(is\s+)?(today'?s|the)\s+)?(date+|day+)\??\W*[\w\W]*$/i
         const askTimeRegex = /^\W*(what['s\s]*(is\s+)?(current'?s|the(\s+current)?)\s+)?(time+)\??\W*[\w\W]*$/i
+        const askJokeRegex = /^\W*(((can|could)\s*you\s*)?tell\s*me\s*a\s*)?(joke+).*(please+|plz+)?\??\W*$/i
 
         var msg = ""
 
@@ -239,6 +240,23 @@ function GlobalBotContextProvider(props) {
         }
         else if(askTimeRegex.exec(senderMsg) !== null){
             msg = `It is ${new Date().toLocaleTimeString()} right now.`;
+        }
+        else if(askJokeRegex.exec(senderMsg) !== null){
+            async function tellJoke(){
+                console.log("Tell joke");
+                const response = await api.tellJoke();
+                console.log(response);
+                if(!response || response.status !== 200){
+                    msg = "Sorry, I have failed to come up with a joke （´㉨｀*)";
+                }
+                if(response.status === 200){
+                    const joke = response.data.joke;
+                    console.log(joke);
+                    bot.respondMessage(joke);
+                }
+            }
+            tellJoke();
+            return;
         }
         else if((match = senderMsg.match(introduceRegex)) !== null){
             if(match && match[1])

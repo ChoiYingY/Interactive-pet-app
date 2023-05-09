@@ -1,7 +1,9 @@
 const express = require('express');
+const axios = require('axios');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const Sentiment = require('sentiment');
+// const JokeAPI = require('sv443-joke-api');
 
 dotenv.config()
 const PORT = process.env.PORT || 4000;
@@ -29,6 +31,46 @@ app.post('/emotion',
                 success: true,
                 result: score
             })
+        }
+        catch(err){
+            console.error(err);
+            return res.status(500).json({ 
+                errorMsg: err
+            });
+        }
+    }   
+)
+
+app.post('/joke',
+    async function(req, res){
+        try{
+            axios.get('https://v2.jokeapi.dev/joke/Any?safe-mode').then(response => {
+                const jokeStruct = response.data;
+                var joke = '';
+
+                if(jokeStruct.error){
+                    return res.status(500).json({ 
+                        errorMsg: "No joke is found."
+                    });
+                }
+                console.log(jokeStruct);
+                if(jokeStruct.type === 'twopart'){
+                    joke = jokeStruct.setup + '\n' + jokeStruct.delivery;
+                }
+                else if(jokeStruct.type === 'single'){
+                    joke = jokeStruct.joke;
+                }
+                return res.status(200).json({
+                    success: true,
+                    joke: joke
+                })
+            })
+            .catch(error => {
+                console.log(error);
+                return res.status(500).json({ 
+                    errorMsg: err
+                });
+            });
         }
         catch(err){
             console.error(err);

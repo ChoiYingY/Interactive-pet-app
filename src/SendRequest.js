@@ -12,8 +12,13 @@ export const analyzeEmotion = (msg) => {
     })
 }
 
+export const tellJoke = () => {
+    return api.post(`/joke/`, {});
+}
+
 const apis = {
-    analyzeEmotion
+    analyzeEmotion,
+    tellJoke
 }
 
 export default apis
